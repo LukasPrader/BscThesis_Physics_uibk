@@ -8,3 +8,8 @@ One can then calculate the probabilities of each respective state of the mention
 
 ### 11/02/24
 The graphs and calculations were now put into the jupyter notebook from handwritten notes, now also including the probability for the light turning on.
+
+### 23/02/24
+An attempt was made to calculate the transient information of a coin flip.
+For this, two approaches were used, one calculating entropy etc. consistent with the explanations in (Crutchfield & Feldmann 2001), which looks at the entropy of sets of a given length.
+The second approach looks at the estimation of the coin flip entropy by observing one coin L times and how this converges towards coin entropy.
