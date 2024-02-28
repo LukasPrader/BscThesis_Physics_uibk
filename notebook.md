@@ -14,7 +14,10 @@ An attempt was made to calculate the transient information of a coin flip.
 For this, two approaches were used, one calculating entropy etc. consistent with the explanations in (Crutchfield & Feldmann 2001), which looks at the entropy of sets of a given length.
 The second approach looks at the estimation of the coin flip entropy by observing one coin L times and how this converges towards coin entropy.
 
-### 28/02/24
+### 27/02/24
 Over the past few days the state probabilities for the three state MDP were approached.
 In a book (C. Iben: Markov Processes for Stochastic Modeling), a method to find the limiting probabilities of a MP was described, using rather simple matrix calculations.
 The results of this method are in perfect agreement with other results, for example the average reward of an optimal and random agent.
+
+### 28/02/24
+The results for the combined observation MP were simplified from the results in Mathematica and added to the jupyter notebook.
