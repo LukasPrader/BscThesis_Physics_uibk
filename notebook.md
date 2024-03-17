@@ -26,3 +26,7 @@ The results for the combined observation MP were simplified from the results in 
 An easier approach to calculate the stationary distribution was found in (Elements of Information Theory, Cover & Thomas).
 It uses linear algebra to find the stationary distribution, which is an eigenvector of the transition matrix.
 This method is easier to understand that the z transform and was now implemented instead of it.
+
+### 17/03/24
+Notation was simplified and made more clear in the first part of the notebook, as well as rudimentary citation.
+There is apparently a feature of jupyter allowing bibtex citation, but getting it to work seems not trivial.
