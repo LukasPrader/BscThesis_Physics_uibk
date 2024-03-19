@@ -30,3 +30,9 @@ This method is easier to understand that the z transform and was now implemented
 ### 17/03/24
 Notation was simplified and made more clear in the first part of the notebook, as well as rudimentary citation.
 There is apparently a feature of jupyter allowing bibtex citation, but getting it to work seems not trivial.
+
+### 18/03/24
+After the next meeting, some notation was again made more clear.
+
+### 19/03/24
+A small function calculating the entropy rate for a stationary MP using (Elements of Information Theory, Cover&Thomas) was implemented. It will have to be expanded to be able to use both numerical and symbolic inputs
