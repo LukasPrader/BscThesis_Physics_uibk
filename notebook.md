@@ -35,4 +35,12 @@ There is apparently a feature of jupyter allowing bibtex citation, but getting i
 After the next meeting, some notation was again made more clear.
 
 ### 19/03/24
-A small function calculating the entropy rate for a stationary MP using (Elements of Information Theory, Cover&Thomas) was implemented. It will have to be expanded to be able to use both numerical and symbolic inputs
+A small function calculating the entropy rate for a stationary MP using (Elements of Information Theory, Cover&Thomas) was implemented. It will have to be expanded to be able to use both numerical and symbolic inputs.
+
+### 21/03/24
+The stationary MP entropy rate function was improved, also allowing numerical input now.
+Another function calculating the block entropy for sequences with given observation probabilities was implemented.
+With this, some exploratory plots were made looking at the change in entropy for the MDP and the first two MPs, when changing the light switch probability or the agents policy.
+
+### 23/03/24
+An incomplete improvement to the block entropy, making it possible to show the actual block entropy from an initial transition matrix, not only for stationary distributions, has been started.
