@@ -44,3 +44,8 @@ With this, some exploratory plots were made looking at the change in entropy for
 
 ### 23/03/24
 An incomplete improvement to the block entropy, making it possible to show the actual block entropy from an initial transition matrix, not only for stationary distributions, has been started.
+
+### 25/03/24
+Block entropy was now implemented correctly.
+The functions for entropy, entropy rate, stationary distribution and block entropy,
+as well as the exploratory plots were moved to a separate notebook for now as to not clutter the old notebook with still largely changing results.
