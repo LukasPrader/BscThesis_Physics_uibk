@@ -49,3 +49,9 @@ An incomplete improvement to the block entropy, making it possible to show the a
 Block entropy was now implemented correctly.
 The functions for entropy, entropy rate, stationary distribution and block entropy,
 as well as the exploratory plots were moved to a separate notebook for now as to not clutter the old notebook with still largely changing results.
+
+### 01/04/24
+An attempt was made to show the block entropy of a biased coin is L*H(p).
+
+### 04/04/24
+The results for a general binary system were added, as well as first explanations of the reasons for incompatibility of the entropy ranges for MDP and the observing MPs.
