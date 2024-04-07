@@ -55,3 +55,10 @@ An attempt was made to show the block entropy of a biased coin is L*H(p).
 
 ### 04/04/24
 The results for a general binary system were added, as well as first explanations of the reasons for incompatibility of the entropy ranges for MDP and the observing MPs.
+
+### 05/04/24
+Some additional reasoning for the issues regarding model separation were added, as well as the variance of the entropy estimator.
+
+### 07/04/24
+Variance of the entropy estimator was set aside, since it is rather complicated.
+So the question of confidence was looked at from a sample view point, making use of two sample t-tests.
