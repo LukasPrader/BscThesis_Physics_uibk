@@ -8007,9 +8007,21 @@ Any combination of the two, be it for several observations and so on, will alway
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>Trying to formulate a more concrete reason for this case:<br/>
 Since for both S1 and S2 of MDP, the decision to wait leads to the same outcome, such a sequence starting in either S1 or S2 can not be distinguished and will thus be seen as one sequence, even though it originated in two different states. This leads to wrong state/sequence probabilities when compared to MDP.<br/>
-How wrong are they though?<br/>
-(Idea: create new model using sequences as states, contribution of superimposed states decreases with number of states,<br/>
-would have to try predictions of block entropy for L+1 using combinations of probabilities of L, since block-state models would have multiple versions of MDP states due to different paths)</p>
+How wrong are they though?</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Idea:<br/>
+create new model using sequences as states, contribution of superimposed states decreases with number of states,<br/>
+would have to try predictions of block entropy for L+1 using combinations of probabilities of L, since block-state models would have multiple versions of MDP states due to different paths
+In contrast, POMDP solution approaches usually assume that the agent has the correct model, just not complete information about the current state (kaelbling1998pomdp).
+Maybe look into other measures instead of entropy, i.e. transfer entropy, mutual information (kim2021infstructures). (Paper from CAS lecture)</p>
 </div>
 </div>
 </div>
@@ -8115,7 +8127,7 @@ $$ d_f = \frac{s_{\Delta \bar{X}}^4}{\frac{s_{X_ 1}^4 + s_{X_2}^4}{d_{f,X}}} = \
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>(formula uses sample mean and sd, can somehow relate to true mean and sd of population, since known?)</p>
+<p>(formula uses sample mean and sd, valid to relate to true mean and sd of population, since known?)</p>
 </div>
 </div>
 </div>
