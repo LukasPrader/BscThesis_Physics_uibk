@@ -65,3 +65,6 @@ so the question of confidence was looked at from a sample view point, making use
 
 ### 08/04/24
 A small addition regarding the model selection idea was made.
+
+### 14/04/24
+The block entropy plot was explained in more detail, focussing on the difference of the results to Crutchfield and Feldman.
