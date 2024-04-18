@@ -68,3 +68,9 @@ A small addition regarding the model selection idea was made.
 
 ### 14/04/24
 The block entropy plot was explained in more detail, focussing on the difference of the results to Crutchfield and Feldman.
+
+### 18/042024
+An addition was made, which makes it possible to project block entropy or entropy rate on some (reducing) mapping of the given states.
+This now shows correct observations for the entropy rate and block entropy of observing MDP.
+
+A Latex template was created, with one MDP plot done to try out the possibilities in latex.

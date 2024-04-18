@@ -1,4 +1,20 @@
 Affordance-based-PS-demo.ipynb
 Affordance-based-PS-demo.html
 
+# latex files
+*.gz
+*.aux
+*.log
+*.fdb_latexmk
+*.fls
+*.log
+*.bbl
+*.bcf
+*.blg
+*.xml
+*.toc
+*.out
+
 crutchfield_block_ent_fig.png
+latex/signature.png
+latex/logo.jpg
