@@ -94,6 +94,25 @@
     \node[fill=gray!50, circle, draw=black] (0) at (0,0) {$S_0$};
     \node[fill=cyan!50, circle, draw=black] (1) at (-1.5,-3) {$S_1$};
     \node[fill=cyan!50, circle, draw=black] (2) at (2,-1.5) {$S_2$};
+
+    \path[every node/.style={font=\sffamily\small}]
+    (0) edge [in=175,out=115, loop] node[above] {$1-p_x | \pi_{a_0}$} (0)
+    (0) edge [in=65,out=5, loop] node[above] {$1-p_x | \pi_{w_0}$} (0)
+    (0) edge [in=120,out=180] node[above, rotate=62] {$p_x | \pi_{a_0}$} (1)
+    (0) edge [bend right] node[below, rotate=62] {$p_x | \pi_{w_0}$} (1)
+    (1) edge [bend right] node[below, rotate=62] {$\pi_{a_1}$} (0)
+    (1) edge [bend right] node {$\pi_{w_1}$} (2)
+    (2) edge [bend left] node[below] {$\pi_{w_2}$} (0)
+    (2) edge [bend right, black!50!green] node[below] {$\pi_{a_2}$} (0);
+
+\end{tikzpicture}
+
+\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+        thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+    \node[fill=gray!50, circle, draw=black] (0) at (0,0) {$S_0$};
+    \node[fill=cyan!50, circle, draw=black] (1) at (-1.5,-3) {$S_1$};
+    \node[fill=cyan!50, circle, draw=black] (2) at (2,-1.5) {$S_2$};
     \node[fill=gray!50, circle, draw=black] (D) at (4,0) {$D$};
     \node[fill=cyan!50, circle, draw=black] (L) at (4,-3) {$L$};
 
@@ -109,6 +128,34 @@
     (0) edge [dotted] node[above] {$\Omega_{Light}$} (D)
     (1) edge [dotted] node[below] {$\Omega_{Light}$} (L)
     (2) edge [dotted] node[above, rotate=-38] {$\Omega_{Light}$} (L);
+
+\end{tikzpicture}
+
+\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+    thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+\node[fill=gray!50, circle, draw=black] (D) at (4,0) {$D$};
+\node[fill=cyan!50, circle, draw=black] (L) at (4,-2.5) {$L$};
+
+\path[every node/.style={font=\sffamily\small}]
+(D) edge [in=110,out=70, loop] node[above] {$1-p_x$} (D)
+(D) edge [bend right] node[above, rotate=90] {$p_x$} (L)
+(L) edge [bend right] node[below, rotate=90] {$\mu_{S_1}\pi_{a_1} + \mu_{S_2}$} (D)
+(L) edge [in=290,out=250, loop] node[below] {$\mu_{S_1}\pi_{w_1}$} (L);
+
+\end{tikzpicture}
+
+\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+    thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+\node[fill=gray!50, circle, draw=black] (A) at (4,0) {$A$};
+\node[fill=gray!50, circle, draw=black] (W) at (4,-2.5) {$W$};
+
+\path[every node/.style={font=\sffamily\small}]
+(A) edge [in=110,out=70, loop] node[above] {$P(\pi_a)$} (A)
+(A) edge [bend right] node[above, rotate=90] {$P(\pi_w)$} (W)
+(W) edge [bend right] node[below, rotate=90] {$P(\pi_a)$} (A)
+(W) edge [in=290,out=250, loop] node[below] {$P(\pi_w)$} (W);
 
 \end{tikzpicture}
 
