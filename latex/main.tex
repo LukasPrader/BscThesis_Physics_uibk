@@ -55,7 +55,7 @@
     \large{submitted for the degree of} \\
     \Large{Bachelor of Science} \\
     \vspace{10mm}
-    \LARGE{\textbf{An information-theoretical approach to internal models in a Partially Observable Markov Decision Process}} \\
+    \LARGE{\textbf{An Information-Theoretical Approach to Internal Models in a Partially Observable Markov Decision Process}} \\
     \vspace{10mm}
 
     \large{by \\ Lukas Prader \\ Matriculation Nr.: 12115058}
@@ -96,8 +96,8 @@
     \node[fill=cyan!50, circle, draw=black] (2) at (2,-1.5) {$S_2$};
 
     \path[every node/.style={font=\sffamily\small}]
-    (0) edge [in=175,out=115, loop] node[above] {$1-p_x | \pi_{a_0}$} (0)
-    (0) edge [in=65,out=5, loop] node[above] {$1-p_x | \pi_{w_0}$} (0)
+    (0) edge [in=175,out=115, loop] node[above=5pt] {$1-p_x | \pi_{a_0}$} (0)
+    (0) edge [in=65,out=5, loop] node[above=5pt] {$1-p_x | \pi_{w_0}$} (0)
     (0) edge [in=120,out=180] node[above, rotate=62] {$p_x | \pi_{a_0}$} (1)
     (0) edge [bend right] node[below, rotate=62] {$p_x | \pi_{w_0}$} (1)
     (1) edge [bend right] node[below, rotate=62] {$\pi_{a_1}$} (0)
@@ -117,8 +117,8 @@
     \node[fill=cyan!50, circle, draw=black] (L) at (4,-3) {$L$};
 
     \path[every node/.style={font=\sffamily\small}]
-    (0) edge [in=175,out=115, loop] node[above] {$1-p_x | \pi_{a_0}$} (0)
-    (0) edge [in=65,out=5, loop] node[above] {$1-p_x | \pi_{w_0}$} (0)
+    (0) edge [in=175,out=115, loop] node[above=5pt] {$1-p_x | \pi_{a_0}$} (0)
+    (0) edge [in=65,out=5, loop] node[above=5pt] {$1-p_x | \pi_{w_0}$} (0)
     (0) edge [in=120,out=180] node[above, rotate=62] {$p_x | \pi_{a_0}$} (1)
     (0) edge [bend right] node[below, rotate=62] {$p_x | \pi_{w_0}$} (1)
     (1) edge [bend right] node[below, rotate=62] {$\pi_{a_1}$} (0)
@@ -156,6 +156,20 @@
 (A) edge [bend right] node[above, rotate=90] {$P(\pi_w)$} (W)
 (W) edge [bend right] node[below, rotate=90] {$P(\pi_a)$} (A)
 (W) edge [in=290,out=250, loop] node[below] {$P(\pi_w)$} (W);
+
+\end{tikzpicture}
+
+\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+    thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+\node[fill=gray!50, circle, draw=black] (H) at (0,0) {$H$};
+\node[fill=gray!50, circle, draw=black] (T) at (2.5,0) {$T$};
+
+\path[every node/.style={font=\sffamily\small}]
+(H) edge [in=210,out=150, loop] node[above=10pt] {$p_H$} (H)
+(H) edge [bend right] node[below] {$1-p_H$} (T)
+(T) edge [bend right] node[above] {$p_H$} (H)
+(T) edge [in=30,out=330, loop] node[above=10pt] {$1-p_H$} (T);
 
 \end{tikzpicture}
 

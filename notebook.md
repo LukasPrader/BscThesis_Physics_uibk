@@ -77,3 +77,6 @@ A Latex template was created, with one MDP plot done to try out the possibilitie
 
 ### 21/04/24
 A new document, work_outline.ipynb was created to showcase the current work in a more presentable manner.
+
+### 28/04/24
+A first version of the presentation slides was created.
