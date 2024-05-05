@@ -80,3 +80,6 @@ A new document, work_outline.ipynb was created to showcase the current work in a
 
 ### 28/04/24
 A first version of the presentation slides was created.
+
+### 05/05/24
+A improved version of the presentation slides was made.
