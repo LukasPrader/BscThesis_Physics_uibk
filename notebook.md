@@ -83,3 +83,6 @@ A first version of the presentation slides was created.
 
 ### 05/05/24
 A improved version of the presentation slides was made.
+
+### 13/05/24
+The slides were further improved for the final presentation
