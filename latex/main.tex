@@ -73,31 +73,33 @@
 \newpage
 \pagenumbering{arabic}
 
-\section{Introduction} \label{chap:introduction}
+\section{Introduction} \label{sec:introduction}
 
-\section{Results} \label{chap:results}
+\section{Methods} \label{sec:methods}
 
-\subsection{Markov Process Plots}
+\begin{figure}[H]
+    \centering
+    % delayed action mdp
+    \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+            thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
 
-% delayed action mdp
-\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-        thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+        \node[fill=gray!50, circle, draw=black] (0) at (0,0) {$S_0$};
+        \node[fill=cyan!50, circle, draw=black] (1) at (-1.5,-3) {$S_1$};
+        \node[fill=cyan!50, circle, draw=black] (2) at (2,-1.5) {$S_2$};
 
-    \node[fill=gray!50, circle, draw=black] (0) at (0,0) {$S_0$};
-    \node[fill=cyan!50, circle, draw=black] (1) at (-1.5,-3) {$S_1$};
-    \node[fill=cyan!50, circle, draw=black] (2) at (2,-1.5) {$S_2$};
+        \path[every node/.style={font=\sffamily\scriptsize}]
+        (0) edge [in=175,out=115, loop] node[above=3pt] {$(1-p(x)) \pi(a_0)$} (0)
+        (0) edge [in=65,out=5, loop] node[above=3pt] {$(1-p(x)) \pi(w_0)$} (0)
+        (0) edge [in=120,out=180] node[above, rotate=62] {$p(x) \pi(a_0)$} (1)
+        (0) edge [bend right] node[below, rotate=62] {$p(x) \pi(w_0)$} (1)
+        (1) edge [bend right] node[above, rotate=62] {$\pi(a_1)$} (0)
+        (1) edge [bend right] node[rotate=18] {$\pi(w_1)$} (2)
+        (2) edge [bend left] node[above, rotate=-42] {$\pi(w_2)$} (0)
+        (2) edge [bend right, black!50!green] node[above, rotate=-42] {$\pi(a_2)$} (0);
 
-    \path[every node/.style={font=\sffamily\scriptsize}]
-    (0) edge [in=175,out=115, loop] node[above=3pt] {$(1-p(x)) \pi(a_0)$} (0)
-    (0) edge [in=65,out=5, loop] node[above=3pt] {$(1-p(x)) \pi(w_0)$} (0)
-    (0) edge [in=120,out=180] node[above, rotate=62] {$p(x) \pi(a_0)$} (1)
-    (0) edge [bend right] node[below, rotate=62] {$p(x) \pi(w_0)$} (1)
-    (1) edge [bend right] node[above, rotate=62] {$\pi(a_1)$} (0)
-    (1) edge [bend right] node[rotate=18] {$\pi(w_1)$} (2)
-    (2) edge [bend left] node[above, rotate=-42] {$\pi(w_2)$} (0)
-    (2) edge [bend right, black!50!green] node[above, rotate=-42] {$\pi(a_2)$} (0);
-
-\end{tikzpicture}
+    \end{tikzpicture}
+    \caption{\label{fig:delayed_mdp} Graph showing the delayed action MDP}
+\end{figure}
 
 % delayed action with light observation
 \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
@@ -124,92 +126,111 @@
 
 \end{tikzpicture}
 
-% reduced light model
-\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-        thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+% reduced markov processes of observations
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+            thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
 
-    \node[fill=gray!50, circle, draw=black] (D) at (4,0) {$D$};
-    \node[fill=cyan!50, circle, draw=black] (L) at (4,-2.5) {$L$};
+        \node[fill=gray!50, circle, draw=black] (D) at (4,0) {$D$};
+        \node[fill=cyan!50, circle, draw=black] (L) at (4,-2.5) {$L$};
+        \node[fill=gray!50, circle, draw=black] (A) at (8,0) {$A$};
+        \node[fill=gray!50, circle, draw=black] (W) at (8,-2.5) {$W$};
 
-    \path[every node/.style={font=\sffamily\scriptsize}]
-    (D) edge [in=110,out=70, loop] node[above] {$1-p(x)$} (D)
-    (D) edge [bend right] node[above, rotate=90] {$p(x)$} (L)
-    (L) edge [bend right] node[below, rotate=90] {$\mu(S_1)\pi(a_1) + \mu(S_2)$} (D)
-    (L) edge [in=290,out=250, loop] node[below] {$\mu(S_1)\pi(w_1)$} (L);
+        \path[every node/.style={font=\sffamily\scriptsize}]
+        (D) edge [in=110,out=70, loop] node[above] {$1-p(x)$} (D)
+        (D) edge [bend right] node[above, rotate=90] {$p(x)$} (L)
+        (L) edge [bend right] node[below, rotate=90] {$\mu(S_1)\pi(a_1) + \mu(S_2)$} (D)
+        (L) edge [in=290,out=250, loop] node[below] {$\mu(S_1)\pi(w_1)$} (L)
+        (A) edge [in=110,out=70, loop] node[above] {$P(\pi_a)$} (A)
+        (A) edge [bend right] node[above, rotate=90] {$P(\pi_w)$} (W)
+        (W) edge [bend right] node[below, rotate=90] {$P(\pi_a)$} (A)
+        (W) edge [in=290,out=250, loop] node[below] {$P(\pi_w)$} (W);
 
-\end{tikzpicture}
+    \end{tikzpicture}
+    \caption{\label{fig:reduced_mps} Reduced models for Observation of light (left) and action (right).}
+\end{figure}
 
-% reduced action model
-\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-        thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+\begin{figure}
+    \centering
+    % L=2 light process
+    \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+            thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
 
-    \node[fill=gray!50, circle, draw=black] (A) at (4,0) {$A$};
-    \node[fill=gray!50, circle, draw=black] (W) at (4,-2.5) {$W$};
+        \node[fill=gray!50, circle, draw=black] (DD) at (0,3.5) {$DD$};
+        \node[fill=gray!50, circle, draw=black] (LD) at (3.5,3.5) {$LD$};
+        \node[fill=cyan!50, circle, draw=black] (DL) at (0,0) {$DL$};
+        \node[fill=cyan!50, circle, draw=black] (LL) at (3.5,0) {$LL$};
 
-    \path[every node/.style={font=\sffamily\scriptsize}]
-    (A) edge [in=110,out=70, loop] node[above] {$P(\pi_a)$} (A)
-    (A) edge [bend right] node[above, rotate=90] {$P(\pi_w)$} (W)
-    (W) edge [bend right] node[below, rotate=90] {$P(\pi_a)$} (A)
-    (W) edge [in=290,out=250, loop] node[below] {$P(\pi_w)$} (W);
+        \path[every node/.style={font=\sffamily\scriptsize}]
+        (DD) edge [in=175,out=115, loop] node[right=1cm] {$1-p(x)$} (DD)
+        (DD) edge node[left] {$p(x)$} (DL)
+        (DL) edge [bend right=10]  node[below, rotate=45] {$\pi(a_1)$} (LD)
+        (LD) edge [bend right=10]  node[above, rotate=45] {$p(x)$} (DL)
+        (LD) edge node[above] {$1-p(x)$} (DD)
+        (DL) edge node[below] {$\pi(w_1)$} (LL)
+        (LL) edge node[right] {$1$} (LD);
 
-\end{tikzpicture}
+    \end{tikzpicture}
+    \caption{\label{fig:mp1_L2} Internal model with sufficient complexity.}
+\end{figure}
 
-% heads tails biased coin
-\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-        thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+\section{Results} \label{sec:results}
 
-    \node[fill=gray!50, circle, draw=black] (H) at (0,0) {$H$};
-    \node[fill=gray!50, circle, draw=black] (T) at (2.5,0) {$T$};
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../figures/mp1_vs_obsL.png}
+    \caption{\label{fig:mp1_vs_obsL} Plot showing the difference between MP1 and the MDP.}
+\end{figure}
 
-    \path[every node/.style={font=\sffamily\scriptsize}]
-    (H) edge [in=210,out=150, loop] node[above=10pt] {$p(H)$} (H)
-    (H) edge [bend right] node[below] {$1-p(H)$} (T)
-    (T) edge [bend right] node[above] {$p(H)$} (H)
-    (T) edge [in=30,out=330, loop] node[above=10pt] {$1-p(H)$} (T);
+Talk about behaviour correlating to order 2 of process, in agreement with Crutchfield.
+Also do the same plot for MP2 and action as well, showing hidden Markov convergence.
 
-\end{tikzpicture}
+\newpage
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{../figures/block_entropy_estimation.png}
+    \caption{\label{fig:mp1_vs_obsL} Plot showing the bias and variance of the plug in estimator for block Entropy.}
+\end{figure}
 
-% skinner video process
-\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-        thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+$$\hat{H}(s^L) = -\sum_i \frac{n_i}{N} \log_2{\frac{n_i}{N}}$$
 
-    \node[fill=gray!50, circle, draw=black] (0) at (0,0) {$S_0$};
-    \node[fill=cyan!50, circle, draw=black] (1) at (-1.5,-3) {$S_1$};
+(Lesne et al.) (10.1103/PhysRevE.79.046208) Entropy estimation of short (time correlated) sequences
+Upper bound on block length given a sequence of observations, in order to have good estimates:
+$$ n \leq \frac{N h_\mu}{\ln(k)} $$
 
-    \path[every node/.style={font=\sffamily\scriptsize}]
-    (0) edge [in=175,out=115, loop] node[above=3pt] {$(1-p(x)) \pi(a_0)$} (0)
-    (0) edge [in=65,out=5, loop] node[above=3pt] {$(1-p(x)) \pi(w_0)$} (0)
-    (0) edge [in=120,out=180] node[above, rotate=62] {$p(x) \pi(a_0)$} (1)
-    (0) edge [bend right] node[below, rotate=62] {$p(x) \pi(w_0)$} (1)
-    (1) edge [bend right, black!50!green] node[above, rotate=62] {$\pi(a_1)$} (0)
-    (1) edge [in=300,out=0] node[below, rotate=62] {$\pi(w_1)$} (0);
+with word length $n$, length of observation sequence $N$ and number of symbols $k$.
 
-\end{tikzpicture}
+They propose first estimating the entropy rate using Lempel-Ziv complexity(iterative algorithm moving through sequence), then setting the sequence length/word length accordingly.
 
-% L=2 light process
-\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-    thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+$$ \hat{L}_0 = \frac{\mathcal{N}_w \ln(N)}{N},\ \hat{L}=\frac{\mathcal{N}_w[1+\log_k\mathcal{N}_w]}{N},\ \lim_{n \to \infty}\hat{L} = \frac{h_\mu}{\ln(k)} $$
 
-\node[fill=gray!50, circle, draw=black] (DD) at (0,3.5) {$DD$};
-\node[fill=gray!50, circle, draw=black] (LD) at (3.5,3.5) {$LD$};
-\node[fill=cyan!50, circle, draw=black] (DL) at (0,0) {$DL$};
-\node[fill=cyan!50, circle, draw=black] (LL) at (3.5,0) {$LL$};
+With $N$ the length of the observation sequence and $\mathcal{N}_w$ parsed words from the Lempel-Ziv algorithm.
+For the plug in estimator, error bars are computable, meaning computable confidence intervals.
 
-\path[every node/.style={font=\sffamily\scriptsize}]
-(DD) edge [in=175,out=115, loop] node[right=1cm] {$1-p(x)$} (DD)
-(DD) edge node[left] {$p(x)$} (DL)
-(DL) edge [bend right=10]  node[below, rotate=45] {$\pi(a_1)$} (LD)
-(LD) edge [bend right=10]  node[above, rotate=45] {$p(x)$} (DL)
-(LD) edge node[above] {$1-p(x)$} (DD)
-(DL) edge node[below] {$\pi(w_1)$} (LL)
-(LL) edge node[right] {$1$} (LD);
+Larson et al. (10.1016/j.procs.2011.04.172) use
+$$ \mathcal{L} h_\mu \geq L|A|^L \ln|A| $$
+solving for $L$ given $\mathcal{L}$ returns $W(\mathcal{L} h_\mu) / \ln|A|$ (mathematica), with the Lambert $W$ function.
+(gives better estimate)
 
-\end{tikzpicture}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{../figures/predictability_gain_estimation.png}
+\end{figure}
 
-\section{Conclusion} \label{chap:conclusion}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{../figures/predictability_gain_estimation_optimal.png}
+\end{figure}
+
+deviation from analytical:
+[-0.00365034217876947 -0.00365907607011157 -0.0124851947847702
+ -0.0251811425394552]
+
+\section{Conclusion} \label{sec:conclusion}
 
 
-\section{Acknowledgements} \label{chap:acknowledgements}
+\section{Acknowledgements} \label{sec:acknowledgements}
 
 
 \clearpage
