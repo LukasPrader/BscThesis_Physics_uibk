@@ -75,6 +75,18 @@
 
 \section{Introduction} \label{sec:introduction}
 
+A large reason for success in many, if not all scientific disciplines has been the adoption of a reductionist perspective on phenomena.
+Widely adopted and successful, this hypothesis assumes that all processes in our universe are in the end governed by a set of fundamental laws, which can be used do describe any higher order of phenomena as well.
+Especially in physics, the idea of a final, unified theory of everything has been seen as the ultimate goal of the discipline for centuries.
+
+Yet, in many disciplines it has been shown that there are so-called emergent phenomena which are not easily explained by lower level fundamental laws, requiring additional concepts to accurately explain them \autocite{anderson1972more}.
+Exactly how these complex phenomena can emerge from the set of currently known fundamental laws is an ongoing field of research, with interdisciplinary approaches taking from the fields of physics, chemistry, biology, psychology, philosophy computer science and others.
+
+Especially the rise of artificial intelligence in recent years has produced new research trying to create complex models able to perform intelligent tasks.
+Research into  so-called complex adaptive systems is also closely connected to research in behavioural biology, trying to understand the emergence of intelligent and adaptive behaviour in animals.
+
+get to information theory and crutchfield
+
 \section{Methods} \label{sec:methods}
 
 \begin{figure}[H]
@@ -101,31 +113,6 @@
     \caption{\label{fig:delayed_mdp} Graph showing the delayed action MDP}
 \end{figure}
 
-% delayed action with light observation
-\begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-        thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
-
-    \node[fill=gray!50, circle, draw=black] (0) at (0,0) {$S_0$};
-    \node[fill=cyan!50, circle, draw=black] (1) at (-1.5,-3) {$S_1$};
-    \node[fill=cyan!50, circle, draw=black] (2) at (2,-1.5) {$S_2$};
-    \node[fill=gray!50, circle, draw=black] (D) at (4,0) {$D$};
-    \node[fill=cyan!50, circle, draw=black] (L) at (4,-3) {$L$};
-
-    \path[every node/.style={font=\sffamily\scriptsize}]
-    (0) edge [in=175,out=115, loop] node[above=3pt] {$(1-p(x)) \pi(a_0)$} (0)
-    (0) edge [in=65,out=5, loop] node[above=3pt] {$(1-p(x)) \pi(w_0)$} (0)
-    (0) edge [in=120,out=180] node[above, rotate=62] {$p(x) \pi(a_0)$} (1)
-    (0) edge [bend right] node[below, rotate=62] {$p(x) \pi(w_0)$} (1)
-    (1) edge [bend right] node[above, rotate=62] {$\pi(a_1)$} (0)
-    (1) edge [bend right] node[rotate=18] {$\pi(w_1)$} (2)
-    (2) edge [bend left] node[above, rotate=-42] {$\pi(w_2)$} (0)
-    (2) edge [bend right, black!50!green] node[above, rotate=-42] {$\pi(a_2)$} (0)
-    (0) edge [dotted] node[above] {$\Omega_L$} (D)
-    (1) edge [dotted] node[below] {$\Omega_L$} (L)
-    (2) edge [dotted] node[above, rotate=-38] {$\Omega_L$} (L);
-
-\end{tikzpicture}
-
 % reduced markov processes of observations
 \begin{figure}[H]
     \centering
@@ -151,7 +138,8 @@
     \caption{\label{fig:reduced_mps} Reduced models for Observation of light (left) and action (right).}
 \end{figure}
 
-\begin{figure}
+
+\begin{figure}[H]
     \centering
     % L=2 light process
     \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
@@ -190,7 +178,7 @@ Also do the same plot for MP2 and action as well, showing hidden Markov converge
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{../figures/block_entropy_estimation.png}
-    \caption{\label{fig:mp1_vs_obsL} Plot showing the bias and variance of the plug in estimator for block Entropy.}
+    \caption{\label{fig:entropy_est} Plot showing the bias and variance of the plug in estimator for block Entropy.}
 \end{figure}
 
 $$\hat{H}(s^L) = -\sum_i \frac{n_i}{N} \log_2{\frac{n_i}{N}}$$
@@ -225,7 +213,7 @@ solving for $L$ given $\mathcal{L}$ returns $W(\mathcal{L} h_\mu) / \ln|A|$ (mat
 
 deviation from analytical:
 [-0.00365034217876947 -0.00365907607011157 -0.0124851947847702
- -0.0251811425394552]
+-0.0251811425394552]
 
 \section{Conclusion} \label{sec:conclusion}
 
