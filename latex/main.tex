@@ -79,14 +79,25 @@ A large reason for success in many, if not all scientific disciplines has been t
 Widely adopted and successful, this hypothesis assumes that all processes in our universe are in the end governed by a set of fundamental laws, which can be used do describe any higher order of phenomena as well.
 Especially in physics, the idea of a final, unified theory of everything has been seen as the ultimate goal of the discipline for centuries.
 
-Yet, in many disciplines it has been shown that there are so-called emergent phenomena which are not easily explained by lower level fundamental laws, requiring additional concepts to accurately explain them \autocite{anderson1972more}.
+Yet, in many disciplines it has been shown that there are so-called emergent phenomena, which are not easily explained by lower-level fundamental laws, requiring additional concepts to accurately explain them \autocite{anderson1972more}
 Exactly how these complex phenomena can emerge from the set of currently known fundamental laws is an ongoing field of research, with interdisciplinary approaches taking from the fields of physics, chemistry, biology, psychology, philosophy computer science and others.
 
 Especially the rise of artificial intelligence in recent years has produced new research trying to create complex models able to perform intelligent tasks.
-Research into  so-called complex adaptive systems is also closely connected to research in behavioural biology, trying to understand the emergence of intelligent and adaptive behaviour in animals.
+Research into  so-called complex adaptive systems is also connected to research in biology, trying to understand the emergence of intelligent and adaptive behaviour in biological organisms. Gaining insight into the mechanisms which enable biological systems to exhibit complex behaviour can in turn be used to improve the ways in which we attempt to create systems capable of these behaviours ourselves.
 
-get to information theory and crutchfield
+Complex system research can thus provide valuable insights into the emergence of intelligent behaviour, which also includes processes connected to adaptive behaviour and learning in animals. Works by the likes of Pavlov and Skinner have probed into the mechanisms that influence behavioural patterns in animals \autocite{pavlov1906scientific, skinner1957experimental}. Exactly how conditionable behaviour like this can emerge just from interaction with the environment is still not fully understood.
 
+Information theory has been fundamental in furthering our understanding of such complex processes. With the work of Shannon \autocite{shannon1948} as a basis, modern information theory has enabled researchers to quantify correlations and changes in complexity of dynamic systems. It has successfully been applied to many examples in behavioural biology, such as looking into the collective behaviour of ants, information exchange in slime molds and group behaviour in bat populations \autocite{kim2021informational}.
+
+Information theory can also be used to examine how biological agents, such as animals, acquire an understanding of their surroundings in order to then act in response, a so-called internal model of their environment. Current approaches to create agents able to learn certain behaviours rely on trial and error to find the amount of parameters necessary to explain the complexity of a given environment, especially if only limited information about an environment is available to the agent. Real life organisms do not seem to be limited as much, still being able to infer information about their environment even with limited information to their disposal.
+
+Crutchfield and Feldman \autocite{crutchfield2003regularities} have proposed information theoretical quantities able to explain processes of inference for complex systems. They can quantify the amount of "synchronization" a system has achieved in comparison to a different system (like an environment), which it can interact with. This framework can provide tools which may enable an agent to autonomously modify the current internal model in order to more accurately reflect the processes of the observed environment.
+
+This thesis aims to apply some of the quantities proposed by Crutchfield and Feldman to a simple example of an agent acting with partial information of its environment, showing the capabilities of this framework to enable evaluation of the current internal model and subsequent improvements to accurately reflect the environment, even with only partial information available to the agent.
+
+% get paragraph about MDPs somewhere?
+
+\newpage
 \section{Methods} \label{sec:methods}
 
 \begin{figure}[H]
