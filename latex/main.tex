@@ -79,50 +79,115 @@ A large reason for success in many, if not all scientific disciplines has been t
 Widely adopted and successful, this hypothesis assumes that all processes in our universe are in the end governed by a set of fundamental laws, which can be used do describe any higher order of phenomena as well.
 Especially in physics, the idea of a final, unified theory of everything has been seen as the ultimate goal of the discipline for centuries.
 
-Yet, in many disciplines it has been shown that there are so-called emergent phenomena, which are not easily explained by lower-level fundamental laws, requiring additional concepts to accurately explain them \autocite{anderson1972more}
+Yet, in many disciplines it has been shown that there are so-called emergent phenomena, which are not easily explained by lower-level fundamental laws, requiring additional concepts to accurately explain them \autocite{anderson1972more}.
 Exactly how these complex phenomena can emerge from the set of currently known fundamental laws is an ongoing field of research, with interdisciplinary approaches taking from the fields of physics, chemistry, biology, psychology, philosophy computer science and others.
 
 Especially the rise of artificial intelligence in recent years has produced new research trying to create complex models able to perform intelligent tasks.
-Research into  so-called complex adaptive systems is also connected to research in biology, trying to understand the emergence of intelligent and adaptive behaviour in biological organisms. Gaining insight into the mechanisms which enable biological systems to exhibit complex behaviour can in turn be used to improve the ways in which we attempt to create systems capable of these behaviours ourselves.
+Research into  so-called complex adaptive systems is also connected to research in biology, trying to understand the emergence of intelligent and adaptive behaviour in biological organisms.
+Gaining insight into the mechanisms which enable biological systems to exhibit complex behaviour can in turn be used to improve the ways in which we attempt to create systems capable of these behaviours ourselves.
 
-Complex system research can thus provide valuable insights into the emergence of intelligent behaviour, which also includes processes connected to adaptive behaviour and learning in animals. Works by the likes of Pavlov and Skinner have probed into the mechanisms that influence behavioural patterns in animals \autocite{pavlov1906scientific, skinner1957experimental}. Exactly how conditionable behaviour like this can emerge just from interaction with the environment is still not fully understood.
+Complex system research can thus provide valuable insights into the emergence of intelligent behaviour, which also includes processes connected to adaptive behaviour and learning in animals.
+Works by the likes of Pavlov and Skinner have probed into the mechanisms that influence behavioural patterns in animals \autocite{pavlov1906scientific, skinner1957experimental}.
+Exactly how conditionable behaviour like this can emerge just from interaction with the environment is still not fully understood.
 
-Information theory has been fundamental in furthering our understanding of such complex processes. With the work of Shannon \autocite{shannon1948} as a basis, modern information theory has enabled researchers to quantify correlations and changes in complexity of dynamic systems. It has successfully been applied to many examples in behavioural biology, such as looking into the collective behaviour of ants, information exchange in slime molds and group behaviour in bat populations \autocite{kim2021informational}.
+Information theory has been fundamental in furthering our understanding of such complex processes.
+With the work of Shannon \autocite{shannon1948} as a basis, modern information theory has enabled researchers to quantify correlations and changes in complexity of dynamic systems.
+It has successfully been applied to many examples in behavioural biology, such as looking into the collective behaviour of ants, information exchange in slime molds and group behaviour in bat populations \autocite{kim2021informational}.
 
-Information theory can also be used to examine how biological agents, such as animals, acquire an understanding of their surroundings in order to then act in response, a so-called internal model of their environment. Current approaches to create agents able to learn certain behaviours rely on trial and error to find the amount of parameters necessary to explain the complexity of a given environment, especially if only limited information about an environment is available to the agent. Real life organisms do not seem to be limited as much, still being able to infer information about their environment even with limited information to their disposal.
+Information theory can also be used to examine how biological agents, such as animals, acquire an understanding of their surroundings in order to then act in response, a so-called internal model of their environment.
+Current approaches to create agents able to learn certain behaviours rely on trial and error to find the amount of parameters necessary to explain the complexity of a given environment, especially if only limited information about an environment is available to the agent.
+Real life organisms do not seem to be limited as much, still being able to infer information about their environment even with limited information to their disposal.
 
-Crutchfield and Feldman \autocite{crutchfield2003regularities} have proposed information theoretical quantities able to explain processes of inference for complex systems. They can quantify the amount of "synchronization" a system has achieved in comparison to a different system (like an environment), which it can interact with. This framework can provide tools which may enable an agent to autonomously modify the current internal model in order to more accurately reflect the processes of the observed environment.
+Crutchfield and Feldman have proposed information theoretical quantities able to explain processes of inference for complex systems \autocite{crutchfield2003regularities}.
+They can quantify the amount of "synchronization" a system has achieved in comparison to a different system (like an environment), which it can interact with.
+This framework can provide tools which may enable an agent to autonomously modify the current internal model in order to more accurately reflect the processes of the observed environment.
 
-This thesis aims to apply some of the quantities proposed by Crutchfield and Feldman to a simple example of an agent acting with partial information of its environment, showing the capabilities of this framework to enable evaluation of the current internal model and subsequent improvements to accurately reflect the environment, even with only partial information available to the agent.
+This thesis aims to apply some of the quantities proposed by Crutchfield and Feldman to a simple example of an agent acting with partial information of its environment.
+The goal is to show the capabilities of this framework to enable evaluation of the current internal model and subsequent improvements to accurately reflect the environment, even with only partial information available to the agent.
 
 % get paragraph about MDPs somewhere?
 
 \newpage
 \section{Methods} \label{sec:methods}
 
+We will look at a small system related to behavioural biology, which can be modelled as a Markov Decision Process.
+A Markov Decision Process (MDP) \autocite{bellman1957MDP} is defined by a set of states $S$, which are connected by transition probabilities, and a set of actions that an agent can perform in a given state.
+These actions are determined by the agent's policy, commonly denoted with $\pi$.
+One usually imposes the Markovian property, which implies that the transition probability from one state to the next only depends on the state itself and not the previous states of the system \autocite{cover1999elements}.
+
+The system we will analyse is a delayed action task, which we want our agent to learn.
+One can imagine a rat in a box, very similar to the aforementioned experiments by Skinner.
+In this box, the rat observes a light switching on and off and has access to a button it can press.
+The rat can obtain rewards, such as food, based on its actions. The light's state (on or off) changes in discrete time steps depending on the rat's actions.
+In our setup, the rat receives a reward only if it presses the button at the correct time after the light turns on, specifically in the second time step.
+This process can be visualized as the graph of an MDP, using three states and the possible transition probabilities as edges between them (Fig. \ref{fig:delayed_mdp}).
+
 \begin{figure}[H]
     \centering
     % delayed action mdp
-    \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-            thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+    \resizebox{0.5\linewidth}{!}{
+        \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+                thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
 
-        \node[fill=gray!50, circle, draw=black] (0) at (0,0) {$S_0$};
-        \node[fill=cyan!50, circle, draw=black] (1) at (-1.5,-3) {$S_1$};
-        \node[fill=cyan!50, circle, draw=black] (2) at (2,-1.5) {$S_2$};
+            \node[fill=gray!50, circle, draw=black] (0) at (0,0) {$S_0$};
+            \node[fill=cyan!50, circle, draw=black] (1) at (-1.5,-3) {$S_1$};
+            \node[fill=cyan!50, circle, draw=black] (2) at (2,-1.5) {$S_2$};
 
-        \path[every node/.style={font=\sffamily\scriptsize}]
-        (0) edge [in=175,out=115, loop] node[above=3pt] {$(1-p(x)) \pi(a_0)$} (0)
-        (0) edge [in=65,out=5, loop] node[above=3pt] {$(1-p(x)) \pi(w_0)$} (0)
-        (0) edge [in=120,out=180] node[above, rotate=62] {$p(x) \pi(a_0)$} (1)
-        (0) edge [bend right] node[below, rotate=62] {$p(x) \pi(w_0)$} (1)
-        (1) edge [bend right] node[above, rotate=62] {$\pi(a_1)$} (0)
-        (1) edge [bend right] node[rotate=18] {$\pi(w_1)$} (2)
-        (2) edge [bend left] node[above, rotate=-42] {$\pi(w_2)$} (0)
-        (2) edge [bend right, black!50!green] node[above, rotate=-42] {$\pi(a_2)$} (0);
+            \path[every node/.style={font=\sffamily\scriptsize}]
+            (0) edge [in=175,out=115, loop] node[above=3pt] {$(1-p(x)) \pi(a_0)$} (0)
+            (0) edge [in=65,out=5, loop] node[above=3pt] {$(1-p(x)) \pi(w_0)$} (0)
+            (0) edge [in=120,out=180] node[above, rotate=62] {$p(x) \pi(a_0)$} (1)
+            (0) edge [bend right] node[below, rotate=62] {$p(x) \pi(w_0)$} (1)
+            (1) edge [bend right] node[above, rotate=62] {$\pi(a_1)$} (0)
+            (1) edge [bend right] node[rotate=18] {$\pi(w_1)$} (2)
+            (2) edge [bend left] node[above, rotate=-42] {$\pi(w_2)$} (0)
+            (2) edge [bend right, black!50!green] node[above, rotate=-42] {$\pi(a_2)$} (0);
 
-    \end{tikzpicture}
-    \caption{\label{fig:delayed_mdp} Graph showing the delayed action MDP}
+        \end{tikzpicture}
+    }
+    \caption{\label{fig:delayed_mdp} Visualisation of the delayed action MDP. Colours of the states describe the state of the light (grey = dark, blue = light) Probabilities coming from the agent policy, acting $a_i$ or waiting $w_i$ for a state with index $i$, are denoted with $\pi$. The probability of the light turning on in the dark state is given as $p(x)$.}
 \end{figure}
+
+In the most general case, the policy of the agent can be different in every state $S_i$.
+We will define the policy to be a probability, with probabilities of choosing to either wait $\pi(w_i)$ or act and press the button $\pi(a_i)$. One can specify the policy only by defining the probability to act, consequently choosing the probability to wait as the inverse probability $1-\pi(a_i)$.
+We will assume that the state of the light is fully determined by the agents actions when being on, but if it is off, there is a probability of $p(x)$ for the light to turn on, independently of the agents action taken in the dark state.
+
+The given MDP has two main properties, stationarity and irreducibility.
+Being irreducible means that every state is reachable from every other state with positive probability in a finite number of steps \autocite{cover1999elements}, while stationarity implies that the transition probabilities do not change over time.
+This is the case for our MDP, if we assume the policy to be fixed.
+
+If we are specifically interested in the transitions for the states of the light, we can write the state transitions of this MDP into a state transition matrix $P$ (assuming some fixed policy $\pi$):
+\begin{equation}
+    \label{eq:P_mdp}
+    P_{MDP} =
+    \begin{bmatrix} 1 - p(x) & p(x) & 0            \\
+                \pi(a_1) & 0    & 1 - \pi(a_1) \\
+                1        & 0    & 0
+    \end{bmatrix},
+\end{equation}
+with each row summing up to one.
+
+One can see that the system reflected by this transition matrix does not capture the whole information about our initial system any more, ignoring the reward and the actions that do not directly influence the transitions of the light.
+
+With the state transition matrix we can calculate the probability of ending up in a state in the next time step, given the probability of being in any of the states in the step before.
+If we let the system transition for many time steps, the state distribution will converge to the so-called stationary distribution \autocite{cover1999elements}. This stationary distribution $\mu$, a row vector by convention, satisfies the following equation:
+\begin{equation}
+    \label{eq:stationary_dist}
+    \mu = P \mu.
+\end{equation}
+
+This means that $\mu$ can be calculated by finding the matrix eigenvector with eigenvalue 1. The eigenvector should be re-scaled if necessary, such that the stationary distribution also has a sum of 1.
+
+Since we are particularly interested in the perspective of an agent observing this system, we will look at it as a process generating observations. The agent can observe parameters of the system, in particular the current state of the light and the action it has just taken.
+Over multiple time steps, these observations will form sequences made up of symbols, which correspond to the particular state that was observed.
+These sequences will have a symbol distribution dependent on the nature of the generating process, motivating the use of information theory to analyse the properties of these sequences.
+
+The standard Shannon entropy,
+\begin{equation}
+    \label{eq:shannon_entropy}
+    H = -\sum_{x \epsilon \mathcal{X}} p(x) \log p(x),
+\end{equation}
+is defined with the sum over all symbols $x$ in a given alphabet $\mathcal{X}$, $\log$ meaning the binary logarithm here, as well as in the rest of this thesis.
 
 % reduced markov processes of observations
 \begin{figure}[H]
