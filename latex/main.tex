@@ -99,7 +99,7 @@ Current approaches to create agents able to learn certain behaviours rely on tri
 Real life organisms do not seem to be limited as much, still being able to infer information about their environment even with limited information to their disposal.
 
 Crutchfield and Feldman have proposed information theoretical quantities able to explain processes of inference for complex systems \autocite{crutchfield2003regularities}.
-They can quantify the amount of "synchronization" a system has achieved in comparison to a different system (like an environment), which it can interact with.
+They can quantify the amount of "synchronisation" a system has achieved in comparison to a different system (like an environment), which it can interact with.
 This framework can provide tools which may enable an agent to autonomously modify the current internal model in order to more accurately reflect the processes of the observed environment.
 
 This thesis aims to apply some of the quantities proposed by Crutchfield and Feldman to a simple example of an agent acting with partial information of its environment.
@@ -115,6 +115,7 @@ A Markov Decision Process (MDP) \autocite{bellman1957MDP} is defined by a set of
 These actions are determined by the agent's policy, commonly denoted with $\pi$.
 One usually imposes the Markovian property, which implies that the transition probability from one state to the next only depends on the state itself and not the previous states of the system \autocite{cover1999elements}.
 
+\subsection{The delayed action task} \label{ssec:delayed_action_mdp}
 The system we will analyse is a delayed action task, which we want our agent to learn.
 One can imagine a rat in a box, very similar to the aforementioned experiments by Skinner.
 In this box, the rat observes a light switching on and off and has access to a button it can press.
@@ -170,15 +171,19 @@ with each row summing up to one.
 One can see that the system reflected by this transition matrix does not capture the whole information about our initial system any more, ignoring the reward and the actions that do not directly influence the transitions of the light.
 
 With the state transition matrix we can calculate the probability of ending up in a state in the next time step, given the probability of being in any of the states in the step before.
-If we let the system transition for many time steps, the state distribution will converge to the so-called stationary distribution \autocite{cover1999elements}. This stationary distribution $\mu$, a row vector by convention, satisfies the following equation:
+If we let the system transition for many time steps, the state distribution will converge to the so-called stationary distribution \autocite{cover1999elements}.
+This stationary distribution $\mu$, a row vector by convention, satisfies the following equation:
 \begin{equation}
     \label{eq:stationary_dist}
     \mu = P \mu.
 \end{equation}
 
-This means that $\mu$ can be calculated by finding the matrix eigenvector with eigenvalue 1. The eigenvector should be re-scaled if necessary, such that the stationary distribution also has a sum of 1.
+This means that $\mu$ can be calculated by finding the matrix eigenvector with eigenvalue 1.
+The eigenvector should be re-scaled if necessary, such that the stationary distribution also has a sum of 1.
 
-Since we are particularly interested in the perspective of an agent observing this system, we will look at it as a process generating observations. The agent can observe parameters of the system, in particular the current state of the light and the action it has just taken.
+\subsection{Entropy and entropy rate} \label{ssec:entropy_rate}
+Since we are particularly interested in the perspective of an agent observing this system, we will look at it as a process generating observations.
+The agent can observe parameters of the system, in particular the current state of the light and the action it has just taken.
 Over multiple time steps, these observations will form sequences made up of symbols, which correspond to the particular state that was observed.
 These sequences will have a symbol distribution dependent on the nature of the generating process, motivating the use of information theory to analyse the properties of these sequences.
 
@@ -188,6 +193,112 @@ The standard Shannon entropy,
     H = -\sum_{x \epsilon \mathcal{X}} p(x) \log p(x),
 \end{equation}
 is defined with the sum over all symbols $x$ in a given alphabet $\mathcal{X}$, $\log$ meaning the binary logarithm here, as well as in the rest of this thesis.
+Given a sequence, we can also calculate the entropy of tuples of symbols.
+We can define the block entropy $H(s^L)$  as the entropy of "blocks" of symbols with length $L$:
+\begin{equation}
+    \label{eq:block_entropy}
+    H(s^L) = -\sum_{s_i^L \epsilon S^L} p(s_i^L) \log p(s_i^L),
+\end{equation}
+looking at all possible blocks $s_i^L$ of length $L$, given a set of symbols $S$.
+One simple intuition to understand this is to think about the entropy of words.
+Instead of calculating the entropy of the individual letters, we calculate the entropy of length $L$ words in a given sentence.
+
+The change of this block entropy for increasing block lengths is called the entropy rate $h_\mu$.
+For an infinitely long sequence, the change in entropy converges to the final entropy rate \autocite{crutchfield2003regularities}:
+\begin{equation}
+    \label{eq:entropy_rate_limit}
+    h_\mu = \lim_{L \to \infty} \frac{H(s^L)}{L}.
+\end{equation}
+
+This entropy rate can be interpreted as the inherent randomness of sequences obtained from the generating process \autocite{crutchfield2003regularities}.
+
+For a stationary Markov Process, the entropy rate can be calculated if the stationary distribution and the transition matrix are known \autocite{cover1999elements}:
+\begin{equation}
+    \label{eq:entropy_rate_MP}
+    h_\mu = -\sum_i \mu_i \sum_j P_{ij} \log P_{ij}.
+\end{equation}
+
+\subsection{Synchronisation and predictability gain} \label{ssec:synch_predgain}
+Knowing how exactly the entropy rate of a system converges to its final value provides information about the complexity and structure of the system.
+For a given block length, one can define the change of entropy at this length using the discrete derivative:
+\begin{equation}
+    \label{eq:entropy_change}
+    \Delta H(s^L) = H(s^L) - H(s^{L-1}).
+\end{equation}
+
+This change in block entropy is equivalent to the estimated entropy rate $\hat{h}_\mu(L)$ at length $L$, which measures how random the system appears if only blocks up to length $L$ are observed.
+It can be shown that $\Delta H(s^L)$ decreases monotonically for increasing $L$, implying that a finite estimate of $h_\mu$ will tend to overestimate the randomness of an incoming sequence, and thus of the generating process \autocite{crutchfield2003regularities}.
+
+This opens the question of when an agent observing a sequence from a generating process can be said to have obtained all the information about the system.
+At this point the agent would have all the information necessary to understand the nature of the generating process.
+So-called "synchronisation" is achieved once the finite change in entropy is equal to the true final entropy rate of the system:
+\begin{equation}
+    \label{eq:synchronisation_equality}
+    h_\mu - \Delta H(s^L) = 0.
+\end{equation}
+It means that there is no new information in blocks larger than $L$, for which synchronisation was achieved.
+
+This criterion depends on knowing the true entropy rate of the generating process, or at least having a very good estimate of it.
+In general, this might not be feasible to obtain for an agent, especially since the agent will have no prior knowledge about the generating process, which it could use to estimate the entropy rate.
+
+A different, although weaker condition to characterize synchronisation is the fact that the entropy rate has to be constant from then on. This means that the second derivative $\Delta^2 H(s^L)$ will be 0.
+We define
+\begin{equation}
+    \label{eq:predictability_gain}
+    \Delta^2 H(s^L) = \Delta H(s^L) - \Delta H(s^{L-1}),
+\end{equation}
+also called predictability gain, which quantifies how much randomness is lost when using information of length $L$ blocks \autocite{crutchfield2003regularities}.
+In order to sensibly define the predictability gain for $L=1$, one defines $\Delta H(s^0) = \log |S|$, using the number of symbols in $S$ defined by the cardinality $|S|$.
+This is motivated by the idea that the randomness of the system is assumed to be maximal, if no sequences have yet been observed \autocite{crutchfield2003regularities}.
+It is important to note that for synchronisation to be achieved, the predictability gain has to be zero for all following block lengths.
+In some cases like periodic processes, it can happen that $\Delta^2 H(s^L)$ will be zero for some blocks, but different from zero for following blocks due to the periodic nature of the process \autocite{crutchfield2003regularities}.
+
+\subsection{Observing the delayed action task} \label{ssec:observing_mdp}
+In the case of the delayed action task (section \ref{ssec:delayed_action_mdp}), the ability for an agent to learn this task heavily depends on the type of information it has about the system.
+If the agent is able to observe the true labels of each state, namely $S_0, S_1$ and $S_2$ (Fig. \ref{fig:obs_L_mdp}), it can easily find the optimal policy maximising the reward.
+
+\begin{figure}[H]
+    \centering
+    % delayed action mdp
+    \resizebox{0.7\linewidth}{!}{
+        \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+                thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+            \node[fill=gray!50, circle, draw=black] (0) at (0,0) {$S_0$};
+            \node[fill=cyan!50, circle, draw=black] (1) at (-1.5,-3) {$S_1$};
+            \node[fill=cyan!50, circle, draw=black] (2) at (2,-1.5) {$S_2$};
+            \node[fill=gray!50, circle, draw=black] (D) at (4,0) {$D$};
+            \node[fill=cyan!50, circle, draw=black] (L) at (4,-3) {$L$};
+
+            \path[every node/.style={font=\sffamily\scriptsize}]
+            (0) edge [in=175,out=115, loop] node[above=3pt] {$(1-p(x)) \pi(a_0)$} (0)
+            (0) edge [in=65,out=5, loop] node[above=3pt] {$(1-p(x)) \pi(w_0)$} (0)
+            (0) edge [in=120,out=180] node[above, rotate=62] {$p(x) \pi(a_0)$} (1)
+            (0) edge [bend right] node[below, rotate=62] {$p(x) \pi(w_0)$} (1)
+            (1) edge [bend right] node[above, rotate=62] {$\pi(a_1)$} (0)
+            (1) edge [bend right] node[rotate=18] {$\pi(w_1)$} (2)
+            (2) edge [bend left] node[above, rotate=-42] {$\pi(w_2)$} (0)
+            (2) edge [bend right, black!50!green] node[above, rotate=-42] {$\pi(a_2)$} (0)
+            (0) edge [dotted] node[above] {$\Omega_L$} (D)
+            (1) edge [dotted] node[below] {$\Omega_L$} (L)
+            (2) edge [dotted] node[above, rotate=-38] {$\Omega_L$} (L);
+
+        \end{tikzpicture}
+    }
+    \caption{\label{fig:obs_L_mdp} The process of reducing the delayed action task to the observable light states. One can see that $S_1$ and $S_2$ produce the same observation.}
+\end{figure}
+
+If the agent can only distinguish between light and dark states based on observations of the light, it can not distinguish $S_1$ and $S_2$.
+Yet, due to the temporal structure of the MDP, one can make a difference between $S_1$ and $S_2$ as soon as the prior state of the light is also known.
+
+This motivates the idea to use the measures shown in the previous sections, since they should be able to find this temporal correlation.
+We will thus analyse reduced sequences of the original MDP and try to quantify the information encoded in them with higher block lengths.
+
+In order to obtain these reduced sequences, we have to first generate a sequence from the true MDP and then reduce the symbols to the partial observation we want to look at (i.e. Fig. \ref{fig:obs_L_mdp} for observing the light).
+Two main sources of information in this process are the state of the light ($L,D \to$ light, dark) and the actions taken by the agent ($A,W \to$ act, wait), which is why we will analyse the behaviour of both of them in the following sections.
+
+
+\section{Results} \label{sec:results}
 
 % reduced markov processes of observations
 \begin{figure}[H]
@@ -238,8 +349,6 @@ is defined with the sum over all symbols $x$ in a given alphabet $\mathcal{X}$, 
     \end{tikzpicture}
     \caption{\label{fig:mp1_L2} Internal model with sufficient complexity.}
 \end{figure}
-
-\section{Results} \label{sec:results}
 
 \begin{figure}[H]
     \centering
