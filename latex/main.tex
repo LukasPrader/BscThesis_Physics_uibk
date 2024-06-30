@@ -99,7 +99,7 @@ Current approaches to create agents able to learn certain behaviours rely on tri
 Real life organisms do not seem to be limited as much, still being able to infer information about their environment even with limited information to their disposal.
 
 Crutchfield and Feldman have proposed information theoretical quantities able to explain processes of inference for complex systems \autocite{crutchfield2003regularities}.
-They can quantify the amount of "synchronisation" a system has achieved in comparison to a different system (like an environment), which it can interact with.
+They can quantify the amount of "synchronization" a system has achieved in comparison to a different system (like an environment), which it can interact with.
 This framework can provide tools which may enable an agent to autonomously modify the current internal model in order to more accurately reflect the processes of the observed environment.
 
 This thesis aims to apply some of the quantities proposed by Crutchfield and Feldman to a simple example of an agent acting with partial information of its environment.
@@ -146,7 +146,7 @@ This process can be visualized as the graph of an MDP, using three states and th
 
         \end{tikzpicture}
     }
-    \caption{\label{fig:delayed_mdp} Visualisation of the delayed action MDP. Colours of the states describe the state of the light (grey = dark, blue = light) Probabilities coming from the agent policy, acting $a_i$ or waiting $w_i$ for a state with index $i$, are denoted with $\pi$. The probability of the light turning on in the dark state is given as $p(x)$.}
+    \caption{\label{fig:delayed_mdp} Visualization of the delayed action MDP. Colours of the states describe the state of the light (grey = dark, blue = light) Probabilities coming from the agent policy, acting $a_i$ or waiting $w_i$ for a state with index $i$, are denoted with $\pi$. The probability of the light turning on in the dark state is given as $p(x)$.}
 \end{figure}
 
 In the most general case, the policy of the agent can be different in every state $S_i$.
@@ -218,7 +218,7 @@ For a stationary Markov Process, the entropy rate can be calculated if the stati
     h_\mu = -\sum_i \mu_i \sum_j P_{ij} \log P_{ij}.
 \end{equation}
 
-\subsection{Synchronisation and predictability gain} \label{ssec:synch_predgain}
+\subsection{Synchronization and predictability gain} \label{ssec:synch_predgain}
 Knowing how exactly the entropy rate of a system converges to its final value provides information about the complexity and structure of the system.
 For a given block length, one can define the change of entropy at this length using the discrete derivative:
 \begin{equation}
@@ -231,17 +231,17 @@ It can be shown that $\Delta H(s^L)$ decreases monotonically for increasing $L$,
 
 This opens the question of when an agent observing a sequence from a generating process can be said to have obtained all the information about the system.
 At this point the agent would have all the information necessary to understand the nature of the generating process.
-So-called "synchronisation" is achieved once the finite change in entropy is equal to the true final entropy rate of the system:
+So-called "synchronization" is achieved once the finite change in entropy is equal to the true final entropy rate of the system:
 \begin{equation}
     \label{eq:synchronisation_equality}
     h_\mu - \Delta H(s^L) = 0.
 \end{equation}
-It means that there is no new information in blocks larger than $L$, for which synchronisation was achieved.
+It means that there is no new information in blocks larger than $L$, for which synchronization was achieved.
 
 This criterion depends on knowing the true entropy rate of the generating process, or at least having a very good estimate of it.
 In general, this might not be feasible to obtain for an agent, especially since the agent will have no prior knowledge about the generating process, which it could use to estimate the entropy rate.
 
-A different, although weaker condition to characterize synchronisation is the fact that the entropy rate has to be constant from then on. This means that the second derivative $\Delta^2 H(s^L)$ will be 0.
+A different, although weaker condition to characterize synchronization is the fact that the entropy rate has to be constant from then on. This means that the second derivative $\Delta^2 H(s^L)$ will be 0.
 We define
 \begin{equation}
     \label{eq:predictability_gain}
@@ -250,12 +250,12 @@ We define
 also called predictability gain, which quantifies how much randomness is lost when using information of length $L$ blocks \autocite{crutchfield2003regularities}.
 In order to sensibly define the predictability gain for $L=1$, one defines $\Delta H(s^0) = \log |S|$, using the number of symbols in $S$ defined by the cardinality $|S|$.
 This is motivated by the idea that the randomness of the system is assumed to be maximal, if no sequences have yet been observed \autocite{crutchfield2003regularities}.
-It is important to note that for synchronisation to be achieved, the predictability gain has to be zero for all following block lengths.
+It is important to note that for synchronization to be achieved, the predictability gain has to be zero for all following block lengths.
 In some cases like periodic processes, it can happen that $\Delta^2 H(s^L)$ will be zero for some blocks, but different from zero for following blocks due to the periodic nature of the process \autocite{crutchfield2003regularities}.
 
 \subsection{Observing the delayed action task} \label{ssec:observing_mdp}
 In the case of the delayed action task (section \ref{ssec:delayed_action_mdp}), the ability for an agent to learn this task heavily depends on the type of information it has about the system.
-If the agent is able to observe the true labels of each state, namely $S_0, S_1$ and $S_2$ (Fig. \ref{fig:obs_L_mdp}), it can easily find the optimal policy maximising the reward.
+If the agent is able to observe the true labels of each state, namely $S_0, S_1$ and $S_2$ (Fig. \ref{fig:obs_L_mdp}), it can easily find the optimal policy maximizing the reward.
 
 \begin{figure}[H]
     \centering
@@ -285,10 +285,10 @@ If the agent is able to observe the true labels of each state, namely $S_0, S_1$
 
         \end{tikzpicture}
     }
-    \caption{\label{fig:obs_L_mdp} The process of reducing the delayed action task to the observable light states. One can see that $S_1$ and $S_2$ produce the same observation.}
+    \caption{\label{fig:obs_L_mdp} The process of reducing the delayed action task (Fig. \ref{fig:delayed_mdp}) to the observable light states. One can see that $S_1$ and $S_2$ produce the same observation.}
 \end{figure}
 
-If the agent can only distinguish between light and dark states based on observations of the light, it can not distinguish $S_1$ and $S_2$.
+If the agent can only distinguish between light and dark states based on observations of the light, it can not distinguish $S_1$ and $S_2$, making it a Partially Observable Markov Decision Process (POMDP).
 Yet, due to the temporal structure of the MDP, one can make a difference between $S_1$ and $S_2$ as soon as the prior state of the light is also known.
 
 This motivates the idea to use the measures shown in the previous sections, since they should be able to find this temporal correlation.
@@ -297,74 +297,189 @@ We will thus analyse reduced sequences of the original MDP and try to quantify t
 In order to obtain these reduced sequences, we have to first generate a sequence from the true MDP and then reduce the symbols to the partial observation we want to look at (i.e. Fig. \ref{fig:obs_L_mdp} for observing the light).
 Two main sources of information in this process are the state of the light ($L,D \to$ light, dark) and the actions taken by the agent ($A,W \to$ act, wait), which is why we will analyse the behaviour of both of them in the following sections.
 
+\subsection{Quantity estimation}
+Since information entropy and the quantities derived thereof use probabilities, their true values are results of using infinite samples.
+Since this is not achievable for a real agent, we will have to use the estimated probabilities.
+The agent can estimate the probability of a sample by calculating the frequency of it in a given sequence of observations, i.e. for the probability of a specific block $s_i^L$ we get
+\begin{equation}
+    \label{eq:prob_estimator}
+    \hat{p}(s_i^L) = \frac{n(s_i^L)}{N},
+\end{equation}
+with $N$ being the total number of blocks of length $L$ in the given sequence.
 
+As an illustrative example, we take the sequence
+\begin{equation*}
+    D L L D L D.
+\end{equation*}
+For blocks of length 2, we get $DL$, $LL$, $LD$, $DL$ and $LD$.
+From this, one could now calculate the frequencies of all possible blocks of length 2.
+With the defined probability estimator, we can define the so-called plug-in-estimator for the block entropy:
+\begin{equation}
+    \label{eq:plug_in_block_ent}
+    \hat{H}(s^L) = -\sum_{s_i^L \epsilon S^L} \hat{p}(s_i^L) \log \hat{p}(s_i^L),
+\end{equation}
+which we will use later to compare estimated values to the analytical results.
+
+\newpage
 \section{Results} \label{sec:results}
+
+\subsection{Stationary distribution and partial models} \label{ssec:res_stationary_dist}
+To be able to calculate the block entropy curve for the delayed action task, one first calculates the stationary distribution of the system.
+Using equation (\ref{eq:stationary_dist}) with the transition matrix $P$ (\ref{eq:P_mdp}), we get the probabilities of encountering each state when observing the system at some random point in time:
+\begin{equation}
+    \label{eq:result_stationary_dist_mdp}
+    \begin{matrix}
+        \mu_{MDP} = [p(S_0),\ p(S_1),\ p(S_2)] =       \\
+        =[\frac{1}{1 + p(x)(2-\pi(a_1))},\
+        \frac{p(x)}{1 + p(x)(2-\pi(a_1))},\
+        \frac{p(x)(1-\pi(a_1))}{1 + p(x)(2-\pi(a_1))}] \\
+    \end{matrix}
+\end{equation}
+
+Using this result, we can actually reduce the MDP of the delayed action task to Markov processes using either the light or the possible actions as states.
+This results in two partial models of the MDP, which we will call MP1 for the light states and MP2 for the action states (see Fig. \ref{fig:partial_mps}).
+For easier notation, we will define the total probability to act and wait as follows:
+\begin{equation}
+    \label{eq:result_prob_act_wait}
+    p(a) = \sum_i p(S_i)\pi(a_i),\ p(w) = 1 - p(a).
+\end{equation}
+
+Sequences generated by these partial models can be compared to observations generated by the MDP, showing if these partial models are accurate representations of the true generating process.
+If they were, it would imply that they can be used as accurate internal representations of the system.
 
 % reduced markov processes of observations
 \begin{figure}[H]
     \centering
-    \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-            thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+    \resizebox{0.6\linewidth}{!}{
+        \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+                thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
 
-        \node[fill=gray!50, circle, draw=black] (D) at (4,0) {$D$};
-        \node[fill=cyan!50, circle, draw=black] (L) at (4,-2.5) {$L$};
-        \node[fill=gray!50, circle, draw=black] (A) at (8,0) {$A$};
-        \node[fill=gray!50, circle, draw=black] (W) at (8,-2.5) {$W$};
+            \node[fill=gray!50, circle, draw=black] (D) at (4,0) {$D$};
+            \node[fill=cyan!50, circle, draw=black] (L) at (4,-2.5) {$L$};
+            \node[fill=gray!50, circle, draw=black] (A) at (8,0) {$A$};
+            \node[fill=gray!50, circle, draw=black] (W) at (8,-2.5) {$W$};
 
-        \path[every node/.style={font=\sffamily\scriptsize}]
-        (D) edge [in=110,out=70, loop] node[above] {$1-p(x)$} (D)
-        (D) edge [bend right] node[above, rotate=90] {$p(x)$} (L)
-        (L) edge [bend right] node[below, rotate=90] {$\mu(S_1)\pi(a_1) + \mu(S_2)$} (D)
-        (L) edge [in=290,out=250, loop] node[below] {$\mu(S_1)\pi(w_1)$} (L)
-        (A) edge [in=110,out=70, loop] node[above] {$P(\pi_a)$} (A)
-        (A) edge [bend right] node[above, rotate=90] {$P(\pi_w)$} (W)
-        (W) edge [bend right] node[below, rotate=90] {$P(\pi_a)$} (A)
-        (W) edge [in=290,out=250, loop] node[below] {$P(\pi_w)$} (W);
+            \path[every node/.style={font=\sffamily\scriptsize}]
+            (D) edge [in=110,out=70, loop] node[above] {$1-p(x)$} (D)
+            (D) edge [bend right] node[above, rotate=90] {$p(x)$} (L)
+            (L) edge [bend right] node[below, rotate=90] {$p(S_1)\pi(a_1) + p(S_2)$} (D)
+            (L) edge [in=290,out=250, loop] node[below] {$p(S_1)\pi(w_1)$} (L)
+            (A) edge [in=110,out=70, loop] node[above] {$p(a)$} (A)
+            (A) edge [bend right] node[above, rotate=90] {$p(w)$} (W)
+            (W) edge [bend right] node[below, rotate=90] {$p(a)$} (A)
+            (W) edge [in=290,out=250, loop] node[below] {$p(w)$} (W);
 
-    \end{tikzpicture}
-    \caption{\label{fig:reduced_mps} Reduced models for Observation of light (left) and action (right).}
+        \end{tikzpicture}
+    }
+    \caption{\label{fig:partial_mps} Partial models for observations of light (left, MP1) and action (right, MP2). The transitions are derived from the original MDP (Fig. \ref{fig:delayed_mdp}) and weighted using its stationary distribution (Eq. \ref{eq:result_stationary_dist_mdp}).}
 \end{figure}
 
+\subsection{Block entropy curves} \label{ssec:res_block_entropy_curves}
+We will now look at the block entropy behaviour of the previously obtained partial models, comparing it to the block entropy curves obtained by observations of the true MDP.
+In order to visualize the curves, we will choose the following numerical values for the free parameters:
+\begin{equation}
+    \label{eq:numerical_params}
+    p(x)=0.6,\ \pi(a_0)=0.5,\ \pi(a_1)=0.3,\ \pi(a_2)=0.7.
+\end{equation}
+
+With this, we can calculate the stationary distributions of our processes, as well as the block entropy values for a given length, just by using the stationary distribution and the transition matrices to calculate the block probabilities (Fig. \ref{fig:block_curves}).
+We can also calculate the final entropy rates for each system by using equation (\ref{eq:entropy_rate_MP}), which makes it possible to visualize the behaviour of convergence.
 
 \begin{figure}[H]
     \centering
-    % L=2 light process
-    \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
-            thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
-
-        \node[fill=gray!50, circle, draw=black] (DD) at (0,3.5) {$DD$};
-        \node[fill=gray!50, circle, draw=black] (LD) at (3.5,3.5) {$LD$};
-        \node[fill=cyan!50, circle, draw=black] (DL) at (0,0) {$DL$};
-        \node[fill=cyan!50, circle, draw=black] (LL) at (3.5,0) {$LL$};
-
-        \path[every node/.style={font=\sffamily\scriptsize}]
-        (DD) edge [in=175,out=115, loop] node[right=1cm] {$1-p(x)$} (DD)
-        (DD) edge node[left] {$p(x)$} (DL)
-        (DL) edge [bend right=10]  node[below, rotate=45] {$\pi(a_1)$} (LD)
-        (LD) edge [bend right=10]  node[above, rotate=45] {$p(x)$} (DL)
-        (LD) edge node[above] {$1-p(x)$} (DD)
-        (DL) edge node[below] {$\pi(w_1)$} (LL)
-        (LL) edge node[right] {$1$} (LD);
-
-    \end{tikzpicture}
-    \caption{\label{fig:mp1_L2} Internal model with sufficient complexity.}
+    \includegraphics[width=0.49\linewidth]{../figures/mp1_obs_L_thesis.png}
+    \includegraphics[width=0.49\linewidth]{../figures/mp2_obs_A_thesis.png}
+    \caption{\label{fig:block_curves}Plots showing the block entropies of the partial models in orange (MP1 left, MP2 right) compared to the block entropies generated by observing the true MDP in green. The dashed and dotted lines show the final entropy rate to which the systems converge for the observations and the partial models respectively.}
 \end{figure}
+
+The first thing we can notice is that in both systems, there is a mismatch between the observed block entropies and the ones from the partial models.
+In case of the light (Fig. \ref{fig:block_curves} left), the difference is very distinct, showing a divergence exactly after $L=2$.
+For the action (Fig. \ref{fig:block_curves} right) it is more subtle, but one can see that the two curves definitely start to separate at $L=5$.
+
+The behaviours observed for MP1 and MP2 can both be explained with results from Crutchfield and Feldman \autocite{crutchfield2003regularities}.
+
+Observing the light shows the block entropy curve of an order-R Markov Process, with R being the amount of states relevant for the transition probabilities of the next state.
+The order of the process reflects in the point of synchronization, where the entropy rate reaches its final value.
+In our case, this implies R=2, meaning that the current state and the state before are needed to know the transition probabilities to the next state.
+This makes sense especially when looking at the structure of the delayed action task again (Fig. \ref{fig:delayed_mdp}).
+The two light states $S_1$ and $S_2$ can not be distinguished by the current light state directly, yet since $S_2$ is only reachable from $S_1$ and $S_1$ only from $S_0$, there must have been a light state before being in $S_2$ and a dark state before being in $S_1$, with $DL$ and $LL$ as distinguishable sequences.
+
+When observing the actions of the agent, the behaviour can be characterized as that of a Hidden Markov Process.
+This stems from the fact that in every state of the MDP, the agent will either act or wait, making the underlying states "hidden".
+The convergence to the true entropy rate in this case is said to be exponential, implying complete synchronization only in the limit of infinity.
+
+Regarding the accuracy of MP1 and MP2 as models of the true MDP, both are not exact representations.
+In the case of MP1 this is visually evident for blocks with $L > 2$, while for MP2 the difference seems to be much smaller.
+
+\subsection{A sufficiently complex internal model} \label{ssec:sufficient_internal_model}
+In the case of observing the light state in the delayed action task, synchronization has been shown to be achieved at finite block lengths, specifically $L=2$.
+Using this information, we can create a model using length 2 blocks as states (Fig. \ref{fig:mp1_L2}).
+
+% L=2 light process
+\begin{figure}[H]
+    \hspace{2cm}
+    \resizebox{0.55\linewidth}{!}{
+        \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
+                thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+            \node[fill=gray!50, circle, draw=black] (DD) at (0,3.5) {$DD$};
+            \node[fill=gray!50, circle, draw=black] (LD) at (3.5,3.5) {$LD$};
+            \node[fill=cyan!50, circle, draw=black] (DL) at (0,0) {$DL$};
+            \node[fill=cyan!50, circle, draw=black] (LL) at (3.5,0) {$LL$};
+
+            \path[every node/.style={font=\sffamily\scriptsize}]
+            (DD) edge [in=175,out=115, loop] node[right=1cm] {$1-p(x)$} (DD)
+            (DD) edge node[left] {$p(x)$} (DL)
+            (DL) edge [bend right=10]  node[below, rotate=45] {$\pi(a_1)$} (LD)
+            (LD) edge [bend right=10]  node[above, rotate=45] {$p(x)$} (DL)
+            (LD) edge node[above] {$1-p(x)$} (DD)
+            (DL) edge node[below] {$\pi(w_1)$} (LL)
+            (LL) edge node[right] {$1$} (LD);
+
+        \end{tikzpicture}
+    }
+    \caption{\label{fig:mp1_L2} Internal model with sufficient complexity to explain the light state of the delayed action task, created using length 2 blocks as states.}
+\end{figure}
+
+An internal model of this form would be sufficient for the agent to synchronize to the MDP, making it possible to learn the optimal policy for the delayed action task.
+
+\subsection{Estimating block entropy and predictability gain}
+Now knowing the analytical result for the necessary complexity of the internal model, we want to further investigate how an agent would be able to come to this conclusion by itself.
+We will only analyse the case of observing the light now, since the desired complexity is reachable with finite block length.
+The agent would have to estimate the predictability gain for the incoming observation in order to find the block length needed to accurately represent the observation.
+
+To simulate the estimation process for the delayed action task, 1000 replications using sequences of length 50 were computed using the transition matrix of the MDP (Eq. \ref{eq:P_mdp}), using the MDP stationary distribution (Eq. \ref{eq:result_stationary_dist_mdp}) to initialize each sequence.
+The sequences were reduced to the light observations (see section \ref{ssec:observing_mdp}) and block entropy values were then estimated using equation (\ref{eq:plug_in_block_ent}).
+The resulting values can then be compared with the analytical results from before (Fig. \ref{fig:entropy_est}).
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{../figures/mp1_vs_obsL.png}
-    \caption{\label{fig:mp1_vs_obsL} Plot showing the difference between MP1 and the MDP.}
+    \includegraphics[width=0.6\linewidth]{../figures/block_entropy_estimation_thesis.png}
+    \caption{\label{fig:entropy_est} Plot showing the results when estimating block entropy from sequences of length 50. The histograms show the combined results from 1000 replicates.}
 \end{figure}
 
-Talk about behaviour correlating to order 2 of process, in agreement with Crutchfield.
-Also do the same plot for MP2 and action as well, showing hidden Markov convergence.
+One can see that the estimate of the block entropy becomes worse for larger block lengths, not only having higher variance, but also resulting in values further below the analytical results.
+This is in part due to the nature of the used plug-in-estimator, which is known to underestimate the true result for finite sample size, also called negative bias \autocite{basharin1959plugin}.
+A more dominant reason here is the temporal correlation between samples, since samples come from the same trajectory of the MDP for each sequence.
 
-\newpage
+When estimating the predictability gain, this issue with bias and variance has significant implications for the results the agent obtains.
+Since the needed complexity is determined by the last block length with non-zero predictability gain, negative bias will wrongly shift the complexity estimate to higher block lengths, as seen in figure (\ref{fig:pred_gain}).
+This means that the agent would estimate the system to be more complex than it actually is.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{../figures/block_entropy_estimation.png}
-    \caption{\label{fig:entropy_est} Plot showing the bias and variance of the plug in estimator for block Entropy.}
+    \includegraphics[width=0.6\linewidth]{../figures/predictability_gain_thesis.png}
+    \caption{\label{fig:pred_gain} Plot showing the estimated predictability gain for sequences of length 50.}
 \end{figure}
+
+Nicely enough, the plug-in-estimator is a consistent estimator, implying that with sequence length approaching infinity, the bias and variance will vanish, making the estimate converge to the analytical result \autocite{basharin1959plugin}.
+While infinite sample size is of course not feasible for any agent, it would also be desirable in general to have a minimal sample size, since this would make the agent more efficient.
+The simulations here are just a demonstration of the difficulty encountered when trying to estimate the complexity of an observation.
+More analysis would need to be done to see how exactly this estimation could be implemented efficiently for use in an agent.
+
+
+\section{Discussion} \label{sec:discussion}
+The work presented shows how information theoretical measures can be applied to a Partially Observable Markov Process in order to find accurate internal models.
 
 $$\hat{H}(s^L) = -\sum_i \frac{n_i}{N} \log_2{\frac{n_i}{N}}$$
 
@@ -386,19 +501,6 @@ $$ \mathcal{L} h_\mu \geq L|A|^L \ln|A| $$
 solving for $L$ given $\mathcal{L}$ returns $W(\mathcal{L} h_\mu) / \ln|A|$ (mathematica), with the Lambert $W$ function.
 (gives better estimate)
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{../figures/predictability_gain_estimation.png}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{../figures/predictability_gain_estimation_optimal.png}
-\end{figure}
-
-deviation from analytical:
-[-0.00365034217876947 -0.00365907607011157 -0.0124851947847702
--0.0251811425394552]
 
 \section{Conclusion} \label{sec:conclusion}
 
