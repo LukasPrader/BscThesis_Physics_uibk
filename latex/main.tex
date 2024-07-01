@@ -16,6 +16,7 @@
 \usepackage{tikz}
 \usepackage{caption} 
 \usepackage{float}
+\usepackage[T1]{fontenc}
 \captionsetup[table]{skip=10pt} % more space between table and caption
 
 \AtBeginBibliography{\small}
@@ -62,7 +63,13 @@
 \newpage
 \thispagestyle{empty}
 \begin{abstract}
-    Lorem ipsum
+    \noindent Intelligent biological agents are able to make sense of their environment and learn to act in it.
+    To accurately model these agents and other complex phenomena, machine learning agents need to get better at replicating these capabilities.
+    When only provided with partial information about a system, current agents rely on sufficiently complex internal structures to enable them to learn complex tasks, yet the question remains how these internal structures come to be.
+    An information theoretical approach to internal model generation was explored with a simple delayed action task.
+    The results show great potential for the framework to enable dynamic internal model generation, with further analysis necessary concerning the scenario of an agent estimating information theoretical quantities from finite samples.\\
+
+    \noindent Keywords: reinforcement learning, information theory, Partially Observable Markov Decision Process, internal model 
 \end{abstract}
 
 \pagenumbering{roman}
@@ -443,7 +450,7 @@ Using this information, we can create a model using length 2 blocks as states (F
 
 An internal model of this form would be sufficient for the agent to synchronize to the MDP, making it possible to learn the optimal policy for the delayed action task.
 
-\subsection{Estimating block entropy and predictability gain}
+\subsection{Estimating block entropy and predictability gain} \label{ssec:est_block_and_pred_gain}
 Now knowing the analytical result for the necessary complexity of the internal model, we want to further investigate how an agent would be able to come to this conclusion by itself.
 We will only analyse the case of observing the light now, since the desired complexity is reachable with finite block length.
 The agent would have to estimate the predictability gain for the incoming observation in order to find the block length needed to accurately represent the observation.
@@ -469,7 +476,7 @@ This means that the agent would estimate the system to be more complex than it a
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\linewidth]{../figures/predictability_gain_thesis.png}
-    \caption{\label{fig:pred_gain} Plot showing the estimated predictability gain for sequences of length 50.}
+    \caption{\label{fig:pred_gain} Plot showing the estimated predictability gain for sequences of length 50. The histograms show the combined results from 1000 replicates.}
 \end{figure}
 
 Nicely enough, the plug-in-estimator is a consistent estimator, implying that with sequence length approaching infinity, the bias and variance will vanish, making the estimate converge to the analytical result \autocite{basharin1959plugin}.
@@ -478,35 +485,50 @@ The simulations here are just a demonstration of the difficulty encountered when
 More analysis would need to be done to see how exactly this estimation could be implemented efficiently for use in an agent.
 
 
+\newpage
 \section{Discussion} \label{sec:discussion}
-The work presented shows how information theoretical measures can be applied to a Partially Observable Markov Process in order to find accurate internal models.
+The results presented show that information theoretical measures can be applied to a Partially Observable Markov Process in order to find accurate internal models, though mostly analytically.
+From observing the light state of the system, one can obtain an internal model which would enable an agent to learn the delayed action task.
+The found representation does not correctly reflect the true MDP though, i.e. with four states instead of three.
 
-$$\hat{H}(s^L) = -\sum_i \frac{n_i}{N} \log_2{\frac{n_i}{N}}$$
+Other work by Crutchfield shows that for unifilar processes, in which each state only emits distinct symbols, once a sufficiently complex model is found, the true system can be recovered by correctly reducing the model if necessary.
+This model is then called the $\epsilon$-machine of the system \autocite{crutchfield1994calculi}.
+A proposed way to reconstruct the $\epsilon$-machine of a system is to iteratively increase model complexity based on the incoming observations.
+This procedure could also be implemented for the delayed action task.
 
-(Lesne et al.) (10.1103/PhysRevE.79.046208) Entropy estimation of short (time correlated) sequences
-Upper bound on block length given a sequence of observations, in order to have good estimates:
-$$ n \leq \frac{N h_\mu}{\ln(k)} $$
+It has also been shown that this procedure can be used for Hidden Markov Processes \autocite{jurgens2021HMP}.
+This means that the action of the agent could also be modelled with an $\epsilon$-machine, potentially enabling the agent to infer the impact of its actions in relation to the light state by relating the two $\epsilon$-machines.
+With this, an agent might be able to infer the optimal policy just from its internal model without having to learn the policy directly, as in other approaches of reinforcement learning like q-learning.
+It may also enable the agent to simulate the environment by itself, which could be used to improve the policy similarly to methods in Projective Simulation \autocite{briegel2012ps}.
 
-with word length $n$, length of observation sequence $N$ and number of symbols $k$.
+For this, further work would need to be done to clarify the difficulties in estimation shown in section (\ref{ssec:est_block_and_pred_gain}).
+There are papers which propose certain thresholds for sequence lengths in order to mitigate bias and get sufficiently accurate results.
+\autocite{lesne2009entropy} show that the needed sequence length $N$ to accurately estimate block entropy of length $n$ with $k$ symbols depends on the final entropy rate $h_\mu$:
+\begin{equation}
+    \label{eq:lesne_seq_length}
+    n \leq \frac{N h_\mu}{\ln(k)}.
+\end{equation}
 
-They propose first estimating the entropy rate using Lempel-Ziv complexity(iterative algorithm moving through sequence), then setting the sequence length/word length accordingly.
+They propose first estimating the entropy rate using Lempel-Ziv complexity, which is not biased like the plug-in-estimator, then selecting the sequence length accordingly.
+Other works use slightly different sequence lengths, but all of them incorporate the influence of $h_\mu$ into their results \autocite{larson2011block,dkebowski2016consistency}.
 
-$$ \hat{L}_0 = \frac{\mathcal{N}_w \ln(N)}{N},\ \hat{L}=\frac{\mathcal{N}_w[1+\log_k\mathcal{N}_w]}{N},\ \lim_{n \to \infty}\hat{L} = \frac{h_\mu}{\ln(k)} $$
+It should also be possible to calculate confidence intervals for the estimates, providing additional information for the agent. Estimation is a major point of concern in this framework and should be addressed more thoroughly in future work.
 
-With $N$ the length of the observation sequence and $\mathcal{N}_w$ parsed words from the Lempel-Ziv algorithm.
-For the plug in estimator, error bars are computable, meaning computable confidence intervals.
-
-Larson et al. (10.1016/j.procs.2011.04.172) use
-$$ \mathcal{L} h_\mu \geq L|A|^L \ln|A| $$
-solving for $L$ given $\mathcal{L}$ returns $W(\mathcal{L} h_\mu) / \ln|A|$ (mathematica), with the Lambert $W$ function.
-(gives better estimate)
-
-
+\newpage
 \section{Conclusion} \label{sec:conclusion}
+Creating more realistic and capable agents promises a more complete understanding of agency and the emergence of complex behaviour in complex adaptive systems.
+It has been shown that information theory is a very powerful tool, which can be used to infer a lot about a system even in circumstances with limited information.
 
+The model-based approach shown here has the potential to provide strong methods for policy optimization, with additional adaptability due to a dynamic, iterative approach to internal model generation.
+Current methods for solving POMDPs usually rely on a correct internal model to begin with, which would make the proposed framework a huge improvement in terms of adaptability and usefulness.
+With internal models representing the observed environment, this approach offers an excellent way to study the learning process of agents, clearly illustrating the structures an agent is able to identify from its own experiences.
+
+In order to prove the viability of this framework, more work has to be done to show how exactly it can be realized and deployed in an agent.
+The potential benefits give strong motivation to pursue more research focused on internal model generation.
 
 \section{Acknowledgements} \label{sec:acknowledgements}
-
+I would like to thank Hans Briegel for making a thesis in this research area of his group possible, as well as Alexander Vining for providing me with this incredibly interesting topic and the support throughout.
+I was able to learn about an extremely fascinating, and in my opinion very relevant area of research with great future potential.
 
 \clearpage
 \section*{Declaration of Authorship}
