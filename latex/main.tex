@@ -64,12 +64,12 @@
 \thispagestyle{empty}
 \begin{abstract}
     \noindent Intelligent biological agents are able to make sense of their environment and learn to act in it.
-    To accurately model these agents and other complex phenomena, machine learning agents need to get better at replicating these capabilities.
-    When only provided with partial information about a system, current agents rely on sufficiently complex internal structures to enable them to learn complex tasks, yet the question remains how these internal structures come to be.
-    An information theoretical approach to internal model generation was explored with a simple delayed action task.
+    In order accurately replicate these behaviours and other complex phenomena in artificial agents, we need better models of the information processing happening in biological organisms.
+    When only provided with partial information about a system, current artificial agents rely on sufficiently complex internal structures (i.e. sufficient amounts of optimizable parameters) to enable them to learn complex tasks, yet the question remains how these internal structures come to be.
+    In this work, an information theoretical approach to internal model generation was explored with a simple delayed action task.
     The results show great potential for the framework to enable dynamic internal model generation, with further analysis necessary concerning the scenario of an agent estimating information theoretical quantities from finite samples.\\
 
-    \noindent Keywords: reinforcement learning, information theory, Partially Observable Markov Decision Process, internal model 
+    \noindent Keywords: reinforcement learning, information theory, Partially Observable Markov Decision Process, internal model
 \end{abstract}
 
 \pagenumbering{roman}
@@ -81,16 +81,11 @@
 \pagenumbering{arabic}
 
 \section{Introduction} \label{sec:introduction}
-
-A large reason for success in many, if not all scientific disciplines has been the adoption of a reductionist perspective on phenomena.
-Widely adopted and successful, this hypothesis assumes that all processes in our universe are in the end governed by a set of fundamental laws, which can be used do describe any higher order of phenomena as well.
-Especially in physics, the idea of a final, unified theory of everything has been seen as the ultimate goal of the discipline for centuries.
-
-Yet, in many disciplines it has been shown that there are so-called emergent phenomena, which are not easily explained by lower-level fundamental laws, requiring additional concepts to accurately explain them \autocite{anderson1972more}.
+The rise of artificial intelligence in recent years has produced new research trying to create complex models able to perform intelligent tasks.
+In many disciplines it has been shown that there are so-called emergent phenomena, which are not easily explained by lower-level fundamental laws, requiring additional concepts to accurately explain them \autocite{anderson1972more}.
 Exactly how these complex phenomena can emerge from the set of currently known fundamental laws is an ongoing field of research, with interdisciplinary approaches taking from the fields of physics, chemistry, biology, psychology, philosophy computer science and others.
 
-Especially the rise of artificial intelligence in recent years has produced new research trying to create complex models able to perform intelligent tasks.
-Research into  so-called complex adaptive systems is also connected to research in biology, trying to understand the emergence of intelligent and adaptive behaviour in biological organisms.
+Research into  so-called complex adaptive systems, for example connected to biology, aims to understand the emergence of intelligent and adaptive behaviour in biological organisms.
 Gaining insight into the mechanisms which enable biological systems to exhibit complex behaviour can in turn be used to improve the ways in which we attempt to create systems capable of these behaviours ourselves.
 
 Complex system research can thus provide valuable insights into the emergence of intelligent behaviour, which also includes processes connected to adaptive behaviour and learning in animals.
@@ -102,8 +97,12 @@ With the work of Shannon \autocite{shannon1948} as a basis, modern information t
 It has successfully been applied to many examples in behavioural biology, such as looking into the collective behaviour of ants, information exchange in slime molds and group behaviour in bat populations \autocite{kim2021informational}.
 
 Information theory can also be used to examine how biological agents, such as animals, acquire an understanding of their surroundings in order to then act in response, a so-called internal model of their environment.
-Current approaches to create agents able to learn certain behaviours rely on trial and error to find the amount of parameters necessary to explain the complexity of a given environment, especially if only limited information about an environment is available to the agent.
+Current approaches to create artificial agents able to learn certain behaviours rely on trial and error to find the amount of parameters necessary to explain the complexity of a given environment, especially if only limited information about an environment is available to the agent.
+
 Real life organisms do not seem to be limited as much, still being able to infer information about their environment even with limited information to their disposal.
+Logical conclusions based on indirectly connected information, called transitive inference, has been shown in multiple animals such as pigeons, honey bees, rats and others \autocite{vasconcelos2008transitive}.
+Here, animals are able to infer the relations between stimuli only with information about other stimuli and their relations to each other.
+Also in the field of Artificial General Intelligence, tests like the ARC test set \autocite{chollet2019measure} show that current state-of-the-art machine learning models are not able to replicate reasoning tasks routinely performed by humans \autocite{johnson2021fast}.
 
 Crutchfield and Feldman have proposed information theoretical quantities able to explain processes of inference for complex systems \autocite{crutchfield2003regularities}.
 They can quantify the amount of "synchronization" a system has achieved in comparison to a different system (like an environment), which it can interact with.
@@ -111,8 +110,7 @@ This framework can provide tools which may enable an agent to autonomously modif
 
 This thesis aims to apply some of the quantities proposed by Crutchfield and Feldman to a simple example of an agent acting with partial information of its environment.
 The goal is to show the capabilities of this framework to enable evaluation of the current internal model and subsequent improvements to accurately reflect the environment, even with only partial information available to the agent.
-
-% get paragraph about MDPs somewhere?
+We will specifically examine how to determine if an internal model has reached sufficient complexity to explain the processes it observes and how this can be used to create an adequate internal model.
 
 \newpage
 \section{Methods} \label{sec:methods}
@@ -158,7 +156,7 @@ This process can be visualized as the graph of an MDP, using three states and th
 
 In the most general case, the policy of the agent can be different in every state $S_i$.
 We will define the policy to be a probability, with probabilities of choosing to either wait $\pi(w_i)$ or act and press the button $\pi(a_i)$. One can specify the policy only by defining the probability to act, consequently choosing the probability to wait as the inverse probability $1-\pi(a_i)$.
-We will assume that the state of the light is fully determined by the agents actions when being on, but if it is off, there is a probability of $p(x)$ for the light to turn on, independently of the agents action taken in the dark state.
+We will assume that the state of the light is fully determined by the agent's actions when being on, but if it is off, there is a probability of $p(x)$ for the light to turn on, independent of the agents action taken in the dark state.
 
 The given MDP has two main properties, stationarity and irreducibility.
 Being irreducible means that every state is reachable from every other state with positive probability in a finite number of steps \autocite{cover1999elements}, while stationarity implies that the transition probabilities do not change over time.
@@ -189,19 +187,21 @@ This means that $\mu$ can be calculated by finding the matrix eigenvector with e
 The eigenvector should be re-scaled if necessary, such that the stationary distribution also has a sum of 1.
 
 \subsection{Entropy and entropy rate} \label{ssec:entropy_rate}
-Since we are particularly interested in the perspective of an agent observing this system, we will look at it as a process generating observations.
-The agent can observe parameters of the system, in particular the current state of the light and the action it has just taken.
+Since we are interested in modelling an agent learning the task, we will treat it as a process generating observations.
+In this way, we are able to analyse how an internal model can be formed, especially if there is no direct interaction to the task.
+One can picture an observer just receiving the observations, without having any additional context to aid in interpretation.
+The agent can observe parameters of the system, in particular the current state of the light and the action that was just performed.
 Over multiple time steps, these observations will form sequences made up of symbols, which correspond to the particular state that was observed.
-These sequences will have a symbol distribution dependent on the nature of the generating process, motivating the use of information theory to analyse the properties of these sequences.
+The sequences will have a symbol distribution dependent on the nature of the generating process, motivating the use of information theory to analyse the properties of these sequences.
 
 The standard Shannon entropy,
 \begin{equation}
     \label{eq:shannon_entropy}
     H = -\sum_{x \epsilon \mathcal{X}} p(x) \log p(x),
 \end{equation}
-is defined with the sum over all symbols $x$ in a given alphabet $\mathcal{X}$, $\log$ meaning the binary logarithm here, as well as in the rest of this thesis.
-Given a sequence, we can also calculate the entropy of tuples of symbols.
-We can define the block entropy $H(s^L)$  as the entropy of "blocks" of symbols with length $L$:
+is defined with the sum over all symbols $x$ in a given alphabet $\mathcal{X}$, $\log$ meaning the base two logarithm here, as well as in the rest of this thesis, implying "bits" as the unit of information.
+Given a sequence, we can also calculate the entropy of tuples, which we will call blocks, of symbols.
+We can define the block entropy $H(s^L)$ as the entropy of blocks of symbols with length $L$:
 \begin{equation}
     \label{eq:block_entropy}
     H(s^L) = -\sum_{s_i^L \epsilon S^L} p(s_i^L) \log p(s_i^L),
@@ -210,35 +210,34 @@ looking at all possible blocks $s_i^L$ of length $L$, given a set of symbols $S$
 One simple intuition to understand this is to think about the entropy of words.
 Instead of calculating the entropy of the individual letters, we calculate the entropy of length $L$ words in a given sentence.
 
-The change of this block entropy for increasing block lengths is called the entropy rate $h_\mu$.
-For an infinitely long sequence, the change in entropy converges to the final entropy rate \autocite{crutchfield2003regularities}:
-\begin{equation}
-    \label{eq:entropy_rate_limit}
-    h_\mu = \lim_{L \to \infty} \frac{H(s^L)}{L}.
-\end{equation}
-
-This entropy rate can be interpreted as the inherent randomness of sequences obtained from the generating process \autocite{crutchfield2003regularities}.
-
-For a stationary Markov Process, the entropy rate can be calculated if the stationary distribution and the transition matrix are known \autocite{cover1999elements}:
-\begin{equation}
-    \label{eq:entropy_rate_MP}
-    h_\mu = -\sum_i \mu_i \sum_j P_{ij} \log P_{ij}.
-\end{equation}
-
-\subsection{Synchronization and predictability gain} \label{ssec:synch_predgain}
-Knowing how exactly the entropy rate of a system converges to its final value provides information about the complexity and structure of the system.
 For a given block length, one can define the change of entropy at this length using the discrete derivative:
 \begin{equation}
     \label{eq:entropy_change}
     \Delta H(s^L) = H(s^L) - H(s^{L-1}).
 \end{equation}
 
-This change in block entropy is equivalent to the estimated entropy rate $\hat{h}_\mu(L)$ at length $L$, which measures how random the system appears if only blocks up to length $L$ are observed.
-It can be shown that $\Delta H(s^L)$ decreases monotonically for increasing $L$, implying that a finite estimate of $h_\mu$ will tend to overestimate the randomness of an incoming sequence, and thus of the generating process \autocite{crutchfield2003regularities}.
+This change in block entropy is equivalent to an estimate of the entropy rate $\hat{h}_\mu(L)$ at length $L$, which measures how random the system appears if only blocks up to length $L$ are observed.
+For an infinitely long sequence, the change in entropy converges to the final entropy rate \autocite{crutchfield2003regularities}:
+\begin{equation}
+    \label{eq:entropy_rate_limit}
+    h_\mu = \lim_{L \to \infty} \frac{H(s^L)}{L}.
+\end{equation}
 
+This entropy rate can be interpreted as the inherent randomness of sequences obtained from the generating process, stemming from the full complexity of the system.
+It can also be shown that $\Delta H(s^L)$ decreases monotonically for increasing $L$, implying that a finite estimate of $h_\mu$ will tend to overestimate the randomness of an incoming sequence, and thus of the generating process \autocite{crutchfield2003regularities}.
+
+For a stationary Markov Process, the final entropy rate can be calculated if the stationary distribution and the transition matrix are known \autocite{cover1999elements}:
+\begin{equation}
+    \label{eq:entropy_rate_MP}
+    h_\mu = -\sum_i \mu_i \sum_j P_{ij} \log P_{ij}.
+\end{equation}
+
+\subsection{Synchronization and predictability gain} \label{ssec:synch_predgain}
+Knowing how exactly $\Delta H(s^L)$ of a system converges to the final entropy rate $h_\mu$ provides information about the complexity and structure of the system.
+Depending on the length of blocks used, the estimated complexity will be different from the true complexity of the system.
 This opens the question of when an agent observing a sequence from a generating process can be said to have obtained all the information about the system.
 At this point the agent would have all the information necessary to understand the nature of the generating process.
-So-called "synchronization" is achieved once the finite change in entropy is equal to the true final entropy rate of the system:
+So-called "synchronization" is achieved once the finite change in entropy is equal to the true final entropy rate of the system \autocite{crutchfield2003regularities}:
 \begin{equation}
     \label{eq:synchronisation_equality}
     h_\mu - \Delta H(s^L) = 0.
@@ -248,7 +247,8 @@ It means that there is no new information in blocks larger than $L$, for which s
 This criterion depends on knowing the true entropy rate of the generating process, or at least having a very good estimate of it.
 In general, this might not be feasible to obtain for an agent, especially since the agent will have no prior knowledge about the generating process, which it could use to estimate the entropy rate.
 
-A different, although weaker condition to characterize synchronization is the fact that the entropy rate has to be constant from then on. This means that the second derivative $\Delta^2 H(s^L)$ will be 0.
+A different, although weaker condition to characterize synchronization is that the entropy rate has to be constant from then on.
+This means that the second derivative $\Delta^2 H(s^L)$ will be 0.
 We define
 \begin{equation}
     \label{eq:predictability_gain}
@@ -292,22 +292,26 @@ If the agent is able to observe the true labels of each state, namely $S_0, S_1$
 
         \end{tikzpicture}
     }
-    \caption{\label{fig:obs_L_mdp} The process of reducing the delayed action task (Fig. \ref{fig:delayed_mdp}) to the observable light states. One can see that $S_1$ and $S_2$ produce the same observation.}
+    \caption{\label{fig:obs_L_mdp} The process of reducing the delayed action task (Fig. \ref{fig:delayed_mdp}) to the observable light states using the mapping $\Omega_L$. One can see that $S_1$ and $S_2$ produce the same observation.}
 \end{figure}
 
 If the agent can only distinguish between light and dark states based on observations of the light, it can not distinguish $S_1$ and $S_2$, making it a Partially Observable Markov Decision Process (POMDP).
+In this case, the agent will not be able to reach the optimal policy, since it can not distinguish the rewarded light state $S_2$ from the unrewarded $S_1$.
 Yet, due to the temporal structure of the MDP, one can make a difference between $S_1$ and $S_2$ as soon as the prior state of the light is also known.
+If the agent were able to use this information, it would again be in a position to distinguish $S_1$ and $S_2$, making it possible to learn the delayed action task once more.
 
 This motivates the idea to use the measures shown in the previous sections, since they should be able to find this temporal correlation.
-We will thus analyse reduced sequences of the original MDP and try to quantify the information encoded in them with higher block lengths.
+In particular, we should be able to show this temporal structure in the change of block entropy, so a different $\Delta H(s^L)$ for $L \leq 2$ and $L>2$.
+We will thus analyse sequences of the original MDP, reduced to partial observations, and try to quantify the information encoded in them with higher block lengths.
 
-In order to obtain these reduced sequences, we have to first generate a sequence from the true MDP and then reduce the symbols to the partial observation we want to look at (i.e. Fig. \ref{fig:obs_L_mdp} for observing the light).
+In order to obtain these sequences, we have to first generate a sequence from the true MDP and then reduce the symbols to the partial observation we want to look at (i.e. Fig. \ref{fig:obs_L_mdp} for observing the light).
+This reduction is performed by an observation mapping $\Omega_K$, with $K$ being the chosen observation.
 Two main sources of information in this process are the state of the light ($L,D \to$ light, dark) and the actions taken by the agent ($A,W \to$ act, wait), which is why we will analyse the behaviour of both of them in the following sections.
 
 \subsection{Quantity estimation}
 Since information entropy and the quantities derived thereof use probabilities, their true values are results of using infinite samples.
 Since this is not achievable for a real agent, we will have to use the estimated probabilities.
-The agent can estimate the probability of a sample by calculating the frequency of it in a given sequence of observations, i.e. for the probability of a specific block $s_i^L$ we get
+The agent can estimate the likelihood of a block by calculating the frequency of it in a given observation sequence, i.e. for the probability of a specific block $s_i^L$ we get
 \begin{equation}
     \label{eq:prob_estimator}
     \hat{p}(s_i^L) = \frac{n(s_i^L)}{N},
@@ -383,6 +387,8 @@ If they were, it would imply that they can be used as accurate internal represen
 
 \subsection{Block entropy curves} \label{ssec:res_block_entropy_curves}
 We will now look at the block entropy behaviour of the previously obtained partial models, comparing it to the block entropy curves obtained by observations of the true MDP.
+This will provide us with information about the adequacy of MP1 and MP2, showing if they are sufficiently complex to describe the MDP.
+If they are, they could potentially be used by an agent to successfully learn the delayed action task.
 In order to visualize the curves, we will choose the following numerical values for the free parameters:
 \begin{equation}
     \label{eq:numerical_params}
@@ -399,7 +405,8 @@ We can also calculate the final entropy rates for each system by using equation 
     \caption{\label{fig:block_curves}Plots showing the block entropies of the partial models in orange (MP1 left, MP2 right) compared to the block entropies generated by observing the true MDP in green. The dashed and dotted lines show the final entropy rate to which the systems converge for the observations and the partial models respectively.}
 \end{figure}
 
-The first thing we can notice is that in both systems, there is a mismatch between the observed block entropies and the ones from the partial models.
+The first thing we can notice is that in both systems, there is a mismatch between the
+block entropies of sequences generated by the MDP and block entropies of sequences generated by the partial observation models.
 In case of the light (Fig. \ref{fig:block_curves} left), the difference is very distinct, showing a divergence exactly after $L=2$.
 For the action (Fig. \ref{fig:block_curves} right) it is more subtle, but one can see that the two curves definitely start to separate at $L=5$.
 
@@ -407,6 +414,7 @@ The behaviours observed for MP1 and MP2 can both be explained with results from 
 
 Observing the light shows the block entropy curve of an order-R Markov Process, with R being the amount of states relevant for the transition probabilities of the next state.
 The order of the process reflects in the point of synchronization, where the entropy rate reaches its final value.
+This point is illustrated with the green points of $\Omega_L$ meeting the line indicated by the final block entropy of the observation $h \Omega_L$ (Fig. \ref{fig:block_curves}, left).
 In our case, this implies R=2, meaning that the current state and the state before are needed to know the transition probabilities to the next state.
 This makes sense especially when looking at the structure of the delayed action task again (Fig. \ref{fig:delayed_mdp}).
 The two light states $S_1$ and $S_2$ can not be distinguished by the current light state directly, yet since $S_2$ is only reachable from $S_1$ and $S_1$ only from $S_0$, there must have been a light state before being in $S_2$ and a dark state before being in $S_1$, with $DL$ and $LL$ as distinguishable sequences.
@@ -414,9 +422,13 @@ The two light states $S_1$ and $S_2$ can not be distinguished by the current lig
 When observing the actions of the agent, the behaviour can be characterized as that of a Hidden Markov Process.
 This stems from the fact that in every state of the MDP, the agent will either act or wait, making the underlying states "hidden".
 The convergence to the true entropy rate in this case is said to be exponential, implying complete synchronization only in the limit of infinity.
+This means that there will always be some small uncertainty about the exact state of the system, even with many observed transitions.
+A visual result from this is that the block entropy of $\Omega_A$ will never match the dashed line of $h \Omega_A$, only asymptotically converge to it.
 
 Regarding the accuracy of MP1 and MP2 as models of the true MDP, both are not exact representations.
-In the case of MP1 this is visually evident for blocks with $L > 2$, while for MP2 the difference seems to be much smaller.
+In the case of MP1 this is visually evident for blocks with $L > 2$, where the block entropies of the model start to differ from those of $\Omega_L$.
+For MP2 the difference seems to be much smaller, but one can start to see a difference at $L=5$, where the orange and green symbols start to overlap less.
+This can also be understood as the internal model predicting a certain behaviour, the orange values, but failing at matching the observations in green, implying that the current internal model is not sufficiently complex.
 
 \subsection{A sufficiently complex internal model} \label{ssec:sufficient_internal_model}
 In the case of observing the light state in the delayed action task, synchronization has been shown to be achieved at finite block lengths, specifically $L=2$.
@@ -448,7 +460,7 @@ Using this information, we can create a model using length 2 blocks as states (F
     \caption{\label{fig:mp1_L2} Internal model with sufficient complexity to explain the light state of the delayed action task, created using length 2 blocks as states.}
 \end{figure}
 
-An internal model of this form would be sufficient for the agent to synchronize to the MDP, making it possible to learn the optimal policy for the delayed action task.
+An internal model of this form would be sufficient for the agent to synchronize to the MDP, potentially making it possible to learn the optimal policy for the delayed action task.
 
 \subsection{Estimating block entropy and predictability gain} \label{ssec:est_block_and_pred_gain}
 Now knowing the analytical result for the necessary complexity of the internal model, we want to further investigate how an agent would be able to come to this conclusion by itself.
@@ -487,8 +499,8 @@ More analysis would need to be done to see how exactly this estimation could be 
 
 \newpage
 \section{Discussion} \label{sec:discussion}
-The results presented show that information theoretical measures can be applied to a Partially Observable Markov Process in order to find accurate internal models, though mostly analytically.
-From observing the light state of the system, one can obtain an internal model which would enable an agent to learn the delayed action task.
+The results presented show that information theoretical measures can be applied to a Partially Observable Markov Process in order to find sufficiently complex internal models, though mostly analytically.
+From observing the light state of the system, one can obtain an internal model which is sufficiently complex to explain the observed block entropy of the light state.
 The found representation does not correctly reflect the true MDP though, i.e. with four states instead of three.
 
 Other work by Crutchfield shows that for unifilar processes, in which each state only emits distinct symbols, once a sufficiently complex model is found, the true system can be recovered by correctly reducing the model if necessary.
@@ -516,7 +528,7 @@ It should also be possible to calculate confidence intervals for the estimates, 
 
 \newpage
 \section{Conclusion} \label{sec:conclusion}
-Creating more realistic and capable agents promises a more complete understanding of agency and the emergence of complex behaviour in complex adaptive systems.
+Creating more realistic and capable artificial agents promises a more complete understanding of agency and the emergence of complex behaviour in complex adaptive systems.
 It has been shown that information theory is a very powerful tool, which can be used to infer a lot about a system even in circumstances with limited information.
 
 The model-based approach shown here has the potential to provide strong methods for policy optimization, with additional adaptability due to a dynamic, iterative approach to internal model generation.
