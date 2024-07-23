@@ -17,19 +17,20 @@
 \usepackage{caption} 
 \usepackage{float}
 \usepackage[T1]{fontenc}
+\usepackage[parfill]{parskip}
 \captionsetup[table]{skip=10pt} % more space between table and caption
 
 \AtBeginBibliography{\small}
 \addbibresource{main_sources.bib}
-
 \setlength{\parindent}{0cm}
+\setlength{\parskip}{0.172cm}
 \setlength{\marginparwidth}{3.5cm} % make todonotes wider
 \newcommand{\todoleft}[1]{{\reversemarginpar \todo{#1}}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
-\def\findate{\today}
+\def\findate{24.07.2024}
 
 
 %title page
@@ -65,7 +66,7 @@
 \begin{abstract}
     \noindent Intelligent biological agents are able to make sense of their environment and learn to act in it.
     In order accurately replicate these behaviours and other complex phenomena in artificial agents, we need better models of the information processing happening in biological organisms.
-    When only provided with partial information about a system, current artificial agents rely on sufficiently complex internal structures (i.e. sufficient amounts of optimizable parameters) to enable them to learn complex tasks, yet the question remains how these internal structures come to be.
+    When only provided with partial information about a system, current artificial agents rely on sufficiently complex internal structures (i.e. a sufficient number of optimizable parameters) to enable them to learn complex tasks, yet the question remains how these internal structures come to be.
     In this work, an information theoretical approach to internal model generation was explored with a simple delayed action task.
     The results show great potential for the framework to enable dynamic internal model generation, with further analysis necessary concerning the scenario of an agent estimating information theoretical quantities from finite samples.\\
 
@@ -94,12 +95,12 @@ Exactly how conditionable behaviour like this can emerge just from interaction w
 
 Information theory has been fundamental in furthering our understanding of such complex processes.
 With the work of Shannon \autocite{shannon1948} as a basis, modern information theory has enabled researchers to quantify correlations and changes in complexity of dynamic systems.
-It has successfully been applied to many examples in behavioural biology, such as looking into the collective behaviour of ants, information exchange in slime molds and group behaviour in bat populations \autocite{kim2021informational}.
+It has successfully been applied to many examples in behavioural biology, such as looking into the collective behaviour of ants, information exchange in slime moulds and group behaviour in bat populations \autocite{kim2021informational}.
 
 Information theory can also be used to examine how biological agents, such as animals, acquire an understanding of their surroundings in order to then act in response, a so-called internal model of their environment.
-Current approaches to create artificial agents able to learn certain behaviours rely on trial and error to find the amount of parameters necessary to explain the complexity of a given environment, especially if only limited information about an environment is available to the agent.
+Current approaches to create artificial agents able to learn certain behaviours rely on trial and error to find the number of parameters necessary to explain the complexity of a given environment, especially if only limited information about an environment is available to the agent.
 
-Real life organisms do not seem to be limited as much, still being able to infer information about their environment even with limited information to their disposal.
+Real life organisms do not seem to be limited as much, still being able to infer information about their environment even with limited information at their disposal.
 Logical conclusions based on indirectly connected information, called transitive inference, has been shown in multiple animals such as pigeons, honey bees, rats and others \autocite{vasconcelos2008transitive}.
 Here, animals are able to infer the relations between stimuli only with information about other stimuli and their relations to each other.
 Also in the field of Artificial General Intelligence, tests like the ARC test set \autocite{chollet2019measure} show that current state-of-the-art machine learning models are not able to replicate reasoning tasks routinely performed by humans \autocite{johnson2021fast}.
@@ -126,7 +127,7 @@ One can imagine a rat in a box, very similar to the aforementioned experiments b
 In this box, the rat observes a light switching on and off and has access to a button it can press.
 The rat can obtain rewards, such as food, based on its actions. The light's state (on or off) changes in discrete time steps depending on the rat's actions.
 In our setup, the rat receives a reward only if it presses the button at the correct time after the light turns on, specifically in the second time step.
-This process can be visualized as the graph of an MDP, using three states and the possible transition probabilities as edges between them (Fig. \ref{fig:delayed_mdp}).
+This process can be visualized as the graph of a MDP, using three states and the possible transition probabilities as edges between them (Fig. \ref{fig:delayed_mdp}).
 
 \begin{figure}[H]
     \centering
@@ -256,7 +257,7 @@ We define
 \end{equation}
 also called predictability gain, which quantifies how much randomness is lost when using information of length $L$ blocks \autocite{crutchfield2003regularities}.
 In order to sensibly define the predictability gain for $L=1$, one defines $\Delta H(s^0) = \log |S|$, using the number of symbols in $S$ defined by the cardinality $|S|$.
-This is motivated by the idea that the randomness of the system is assumed to be maximal, if no sequences have yet been observed \autocite{crutchfield2003regularities}.
+This is motivated by the idea that the randomness of the system is assumed to be maximal if no sequences have yet been observed \autocite{crutchfield2003regularities}.
 It is important to note that for synchronization to be achieved, the predictability gain has to be zero for all following block lengths.
 In some cases like periodic processes, it can happen that $\Delta^2 H(s^L)$ will be zero for some blocks, but different from zero for following blocks due to the periodic nature of the process \autocite{crutchfield2003regularities}.
 
@@ -318,10 +319,7 @@ The agent can estimate the likelihood of a block by calculating the frequency of
 \end{equation}
 with $N$ being the total number of blocks of length $L$ in the given sequence.
 
-As an illustrative example, we take the sequence
-\begin{equation*}
-    D L L D L D.
-\end{equation*}
+As an illustrative example, we take the sequence D L L D L D.
 For blocks of length 2, we get $DL$, $LL$, $LD$, $DL$ and $LD$.
 From this, one could now calculate the frequencies of all possible blocks of length 2.
 With the defined probability estimator, we can define the so-called plug-in-estimator for the block entropy:
@@ -339,14 +337,13 @@ To be able to calculate the block entropy curve for the delayed action task, one
 Using equation (\ref{eq:stationary_dist}) with the transition matrix $P$ (\ref{eq:P_mdp}), we get the probabilities of encountering each state when observing the system at some random point in time:
 \begin{equation}
     \label{eq:result_stationary_dist_mdp}
-    \begin{matrix}
-        \mu_{MDP} = [p(S_0),\ p(S_1),\ p(S_2)] =       \\
-        =[\frac{1}{1 + p(x)(2-\pi(a_1))},\
+    \begin{split}
+        \mu_{MDP} &= [p(S_0),\ p(S_1),\ p(S_2)] =       \\
+        &=[\frac{1}{1 + p(x)(2-\pi(a_1))},\
         \frac{p(x)}{1 + p(x)(2-\pi(a_1))},\
-        \frac{p(x)(1-\pi(a_1))}{1 + p(x)(2-\pi(a_1))}] \\
-    \end{matrix}
+        \frac{p(x)(1-\pi(a_1))}{1 + p(x)(2-\pi(a_1))}]
+    \end{split}
 \end{equation}
-
 Using this result, we can actually reduce the MDP of the delayed action task to Markov processes using either the light or the possible actions as states.
 This results in two partial models of the MDP, which we will call MP1 for the light states and MP2 for the action states (see Fig. \ref{fig:partial_mps}).
 For easier notation, we will define the total probability to act and wait as follows:
@@ -354,14 +351,13 @@ For easier notation, we will define the total probability to act and wait as fol
     \label{eq:result_prob_act_wait}
     p(a) = \sum_i p(S_i)\pi(a_i),\ p(w) = 1 - p(a).
 \end{equation}
-
 Sequences generated by these partial models can be compared to observations generated by the MDP, showing if these partial models are accurate representations of the true generating process.
-If they were, it would imply that they can be used as accurate internal representations of the system.
+If they are, it would imply that they can be used as accurate internal representations of the system.
 
 % reduced markov processes of observations
 \begin{figure}[H]
     \centering
-    \resizebox{0.6\linewidth}{!}{
+    \resizebox{0.535\linewidth}{!}{
         \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
                 thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
 
@@ -398,7 +394,7 @@ In order to visualize the curves, we will choose the following numerical values 
 With this, we can calculate the stationary distributions of our processes, as well as the block entropy values for a given length, just by using the stationary distribution and the transition matrices to calculate the block probabilities (Fig. \ref{fig:block_curves}).
 We can also calculate the final entropy rates for each system by using equation (\ref{eq:entropy_rate_MP}), which makes it possible to visualize the behaviour of convergence.
 
-There are two fundamental differences between the results obtained for MP1 or MP2 and the results for the MDP.
+There is one elementary difference between the results obtained for MP1 or MP2 and the results for the MDP.
 The results for the internal models can be seen as predictions the agent makes about its environment, while the results for the MDP are those that the agent obtains using observations.
 This means that figure (\ref{fig:block_curves}) illustrates how predictions of the internal models compare to the real observations an agent would receive.
 
@@ -409,8 +405,7 @@ This means that figure (\ref{fig:block_curves}) illustrates how predictions of t
     \caption{\label{fig:block_curves}Plots showing the block entropies of the partial models in orange (MP1 left, MP2 right) compared to the block entropies generated by observing the true MDP in green. The dashed and dotted lines show the final entropy rate to which the systems converge for the observations and the partial models respectively.}
 \end{figure}
 
-The first thing we can notice is that in both systems, there is a mismatch between the
-block entropies (orange squares and green triangles) of sequences generated by the MDP and block entropies of sequences generated by the partial observation models.
+The first thing we can notice is that in both systems, there is a mismatch between the block entropies of sequences generated by the MDP (green triangles) and block entropies of sequences generated by the partial observation models (orange squares).
 In case of the light (Fig. \ref{fig:block_curves} left), the difference is very distinct, showing a divergence exactly after $L=2$.
 For the action (Fig. \ref{fig:block_curves} right) it is more subtle, but one can see that the two curves definitely start to separate at $L=5$.
 There also are differences in how $\Omega_L$ and $\Omega_A$ converge to their respective final entropy rates $h\ \Omega_L$ and $h\ \Omega_A$.
@@ -420,17 +415,23 @@ The behaviours observed for $\Omega_L$ and $\Omega_A$ can both be explained with
 Observing the light shows the block entropy curve of an order-R Markov Process, with R being the amount of states relevant for the transition probabilities of the next state.
 The order of the process reflects in the point of synchronization, where the entropy rate reaches its final value.
 This point is illustrated with the green points of $\Omega_L$ meeting the dashed line indicated by the final entropy rate of the observation $h \Omega_L$ (Fig. \ref{fig:block_curves}, left).
-In our case, this implies R=2, meaning that the current state and the state before are needed to know the transition probabilities to the next state.
-This makes sense especially when looking at the structure of the delayed action task again (Fig. \ref{fig:delayed_mdp}).
-The two light states $S_1$ and $S_2$ can not be distinguished by the current light state directly, yet since $S_2$ is only reachable from $S_1$ and $S_1$ only from $S_0$, there must have been a light state before being in $S_2$ and a dark state before being in $S_1$, with $DL$ and $LL$ as distinguishable sequences.
+In our case, this implies R=2, where the entropy rate changes to match the black dashed line, meaning that the current state and the state before are needed to know the transition probabilities to the next state.
+
+Looking at the structure of the delayed action task again (Fig. \ref{fig:delayed_mdp}), this result highlights how the light states are related to each other.
+If an agent can only observe the current state of the light, $S_1$ and $S_2$ can not be distinguished since in both of them the light is on.
+Yet, if the agent is able to look at the current state of the light and the state in the time step just before, it is possible to distinguish $S_1$ from $S_2$. 
+Since $S_2$ is only reachable from $S_1$ and $S_1$ only from $S_0$, there must have been a light state before being in $S_2$ and a dark state before being in $S_1$.
+This means that with $DL$ for $S_1$ and $LL$ for $S_2$ as distinguishable sequences, an agent capable of remembering the current state and the last one just before, so a temporal memory of length 2, would be able to distinguish all states of the MDP.
+
 Comparing this behaviour to MP1, we can see that MP1 does not have any change in entropy rate $\Delta H(s^L)$, it matches the final block entropy (dotted line) already from the beginning.
 Since $\Omega_L$ has exactly one change in entropy rate exactly at $L=2$, it signifies that there is some structure underlying the generating process that influences the block entropy for blocks of length 2, but no higher order complexity.
 This means that MP1 does not have the order 2 complexity needed to accurately represent the light states of the MDP.
 
-Yet it is interesting to note that MP1 and $\Omega_L$ do match in block entropy values for $L \leq 2$.
-This arises from how MP1 is computed, using the stationary distribution and transitions to the next state from the MDP, which implies accurate representation of blocks with $L=2$.
+Yet it is interesting to note that MP1 and $\Omega_L$ do match in block entropy values for $L \leq 2$, suggesting that MP1 correctly models the behaviour of the MDP up to sequences of length 2.
+This arises from how MP1 is computed, using the stationary distribution and transitions to the next state from the MDP, which implies accurate representation of blocks with $L\leq 2$.
 It also means, that an agent with only the ability to look at blocks up to $L=2$ would not be able to see the shortcomings of MP1, seeing it as the correct model for this process.
 This issue already shows an additional limitation for an agent trying to find the correct internal model from estimates with obtained observations, which will be discussed in section (\ref{sec:discussion}).
+The choice of using stationary results of the MDP additionally implies inherent stationarity for MP1, explaining why it is already synchronized from the beginning.
 
 When observing the actions of the agent, the behaviour can be characterized as that of a Hidden Markov Process.
 This stems from the fact that in every state of the MDP, the agent will either act or wait, making the underlying states "hidden".
@@ -450,7 +451,7 @@ Using this information, we can create a model using length 2 blocks as states (F
 % L=2 light process
 \begin{figure}[H]
     \hspace{2cm}
-    \resizebox{0.55\linewidth}{!}{
+    \resizebox{0.58\linewidth}{!}{
         \begin{tikzpicture}[->,shorten >=1pt,auto,node distance=3cm,
                 thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
 
@@ -492,7 +493,7 @@ The resulting values can then be compared with the analytical results from befor
 
 One can see that the estimate of the block entropy becomes worse for larger block lengths, not only having higher variance, but also resulting in values further below the analytical results.
 This is in part due to the nature of the used plug-in-estimator, which is known to underestimate the true result for finite sample size, which is also called negative bias \autocite{basharin1959plugin}.
-A more dominant reason here is the temporal correlation between samples, since samples come from the same trajectory of the MDP for each sequence.
+A more dominant reason here though is the temporal correlation between samples, since samples come from the same trajectory of the MDP for each sequence.
 
 When estimating the predictability gain, this issue with bias and variance has significant implications for the results the agent obtains.
 Since the needed complexity is determined by the last block length with non-zero predictability gain, negative bias will wrongly shift the complexity estimate to higher block lengths, as seen in figure (\ref{fig:pred_gain}).
@@ -548,7 +549,7 @@ It would actually find MP1 do be an accurate representation, since it matches bl
 This means that an agent will converge to an insufficient internal model, if the length of observed sequences is too short compared to the complexity of the generating process.
 
 One way for the agent to be aware of this limitation would be to estimate a final entropy rate $\hat{h}_\mu$ for the internal model and compare it to the one used to determine sequence length.
-The difference between those values would tell the agent how far the internal model is away from an accurate representation, even it the current model is the optimal one for the obtainable sequence length.
+The difference between those values would tell the agent how far the internal model is away from an accurate representation, even if the current model is the optimal one for the obtainable sequence length.
 
 \newpage
 \section{Conclusion} \label{sec:conclusion}
